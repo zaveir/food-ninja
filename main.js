@@ -5,21 +5,30 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setAnimationLoop( animate );
+renderer.setAnimationLoop(animate);
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+const geometry = new THREE.PlaneGeometry( 1, 1 );
+const texture = new THREE.TextureLoader().load( "/sushi.png" );
+const material = new THREE.MeshBasicMaterial( { map: texture } );
+const plane = new THREE.Mesh(geometry, material);
+scene.add(plane);
 
 camera.position.z = 5;
 
-function animate() {
+const { v0, theta } = launchRandom();
 
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+function animate(time) {
+    time *= 0.001;
 
-	renderer.render( scene, camera );
+    plane.position.x = v0 * Math.cos(theta) * time;
+    plane.position.y = v0 * Math.sin(theta) * time - 4.9 * time ** 2;
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
 
+function launchRandom() {
+    const v0 = Math.random() * 10;
+    const theta = Math.random() * Math.PI / 2;
+    return { v0, theta };
 }
