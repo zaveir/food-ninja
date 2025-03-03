@@ -5,25 +5,44 @@ const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.inner
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
-renderer.setAnimationLoop(animate);
+// renderer.setAnimationLoop(animate);
 document.body.appendChild( renderer.domElement );
 
-const geometry = new THREE.PlaneGeometry( 1, 1 );
-const texture = new THREE.TextureLoader().load( "/sushi.png" );
-const material = new THREE.MeshBasicMaterial( { map: texture } );
-const plane = new THREE.Mesh(geometry, material);
-scene.add(plane);
+const foods = ["/sushi.png", "/apple.png"];
+
+const foodMeshes = [];
+for (let i = 0; i < 3; i++) {
+    const food = foods[Math.floor(Math.random() * foods.length)];
+
+    const geometry = new THREE.PlaneGeometry( 1, 1 );
+    const texture = new THREE.TextureLoader().load(food);
+    const material = new THREE.MeshBasicMaterial( { map: texture } );
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const { v0, theta } = launchRandom();
+    foodMeshes.push({ mesh: mesh, v0: v0, theta: theta });
+}
 
 camera.position.z = 5;
 
-const { v0, theta } = launchRandom();
+animate();
 
 function animate(time) {
     time *= 0.001;
 
-    plane.position.x = v0 * Math.cos(theta) * time;
-    plane.position.y = v0 * Math.sin(theta) * time - 4.9 * time ** 2;
+    foodMeshes.forEach((foodMesh, index) => {
+        const mesh = foodMesh.mesh;
+        const v0 = foodMesh.v0;
+        const theta = foodMesh.theta;
+        mesh.position.x = v0 * Math.cos(theta) * time;
+        mesh.position.y = v0 * Math.sin(theta) * time - 4.9 * time ** 2;
+        
+    });
+
     renderer.render(scene, camera);
+
+    if (time > 10) return; // to make sure it doesn't go forever
     requestAnimationFrame(animate);
 }
 
