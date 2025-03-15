@@ -1,11 +1,17 @@
 import * as THREE from 'three';
 
+// Scene setup
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 camera.position.z = 5;
+
+// Lighting
+// const light = new THREE.DirectionalLight(0xffffff, 1);
+// light.position.set(1, 1, 1);
+// scene.add(light);
 
 const coord = getHeight(camera);
 const topY = coord.y;
@@ -14,12 +20,30 @@ console.log(`y: ${topY}, x: ${rightX}`);
 const left = -1 * rightX;
 const bottom = -1 * topY; // Right below bottom of screen
 
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let isSlicing = false;
+let slicePoints = [];
+
+// Line setup to visualize slicing
+const sliceMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 }); // Green slicing line
+let sliceLine;
+
 
 const meshObjs = [];
 const foodStrs = ["/sushi.png", "/apple.png"];
 
+let score = 0;
+
 randomTick();
 animate();
+
+const geometry = new THREE.PlaneGeometry( 1, 1 );
+const texture = new THREE.TextureLoader().load("/sushi.png");
+const material = new THREE.MeshBasicMaterial( { map: texture } );
+const mesh = new THREE.Mesh(geometry, material);
+
+scene.add(mesh);
 
 function randomTick() {
     setTimeout(() => {
@@ -71,5 +95,56 @@ function getHeight(camera) {
     const frustumWidth = frustumHeight * camera.aspect;
     const rightX = frustumWidth / 2;
     return { x: rightX, y: topY };
+}
+
+window.addEventListener("mousedown", () => {
+    isSlicing = true;
+    slicePoints = [];
+
+    if (sliceLine) {
+        scene.remove(sliceLine);
+        sliceLine.geometry.dispose();
+        sliceLine.material.dispose();
+    }
+});
+
+window.addEventListener("mouseup", () => {
+    isSlicing = false;
+    updateSliceLine();
+    console.log(slicePoints);
+    if (slicePoints.length >= 2) {
+        updateScore();
+    }
+});
+
+window.addEventListener("mousemove", (event) => {
+    if (!isSlicing) return;
+
+    // Normalize mouse poition from -1 to 1
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster.setFromCamera(mouse, camera);
+    // const intersects = raycaster.intersectObject(mesh);
+    const intersects = raycaster.intersectObjects(scene.children);
+
+    if (intersects.length > 0) {
+        slicePoints.push(intersects[0].point);
+        updateSliceLine();
+        // console.log("Intersected object", intersects);
+    }
+});
+
+function updateSliceLine() {
+    if (slicePoints.length < 2) return; // Need 2 points for line
+
+    const sliceGeometry = new THREE.BufferGeometry().setFromPoints(slicePoints);
+    sliceLine = new THREE.Line(sliceGeometry, sliceMaterial);
+    scene.add(sliceLine);
+}
+
+function updateScore() {
+    score++;
+    document.getElementById("score").innerHTML = score;
 }
   
