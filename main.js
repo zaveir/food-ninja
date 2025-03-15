@@ -1,49 +1,53 @@
 import * as THREE from 'three';
 
-// Scene setup
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-camera.position.z = 5;
+let scene, camera, renderer;
+let raycaster, mouse;
 
-// Lighting
-// const light = new THREE.DirectionalLight(0xffffff, 1);
-// light.position.set(1, 1, 1);
-// scene.add(light);
-
-const coord = getHeight(camera);
-const topY = coord.y;
-const rightX = coord.x;
-console.log(`y: ${topY}, x: ${rightX}`);
-const left = -1 * rightX;
-const bottom = -1 * topY; // Right below bottom of screen
-
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
+let sliceLine;
 let isSlicing = false;
 let slicePoints = [];
+let score = 0;
 
-// Line setup to visualize slicing
-const sliceMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 }); // Green slicing line
-let sliceLine;
-
+let rightX;
+let topY;
 
 const meshObjs = [];
 const foodStrs = ["/sushi.png", "/apple.png"];
 
-let score = 0;
+const sliceMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 }); // Green slicing line
 
+init();
 randomTick();
 animate();
 
-const geometry = new THREE.PlaneGeometry( 1, 1 );
-const texture = new THREE.TextureLoader().load("/sushi.png");
-const material = new THREE.MeshBasicMaterial( { map: texture } );
-const mesh = new THREE.Mesh(geometry, material);
+function init() {
+    // Scene setup
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
+    renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    camera.position.z = 5;
 
-scene.add(mesh);
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
+    // Lighting
+    // const light = new THREE.DirectionalLight(0xffffff, 1);
+    // light.position.set(1, 1, 1);
+    // scene.add(light);
+
+    const coord = getHeight(camera);
+    topY = coord.y;
+    rightX = coord.x;
+
+    const geometry = new THREE.PlaneGeometry( 1, 1 );
+    const texture = new THREE.TextureLoader().load("/sushi.png");
+    const material = new THREE.MeshBasicMaterial( { map: texture } );
+    const mesh = new THREE.Mesh(geometry, material);
+
+    scene.add(mesh);
+}
 
 function randomTick() {
     setTimeout(() => {
@@ -59,8 +63,8 @@ function animate() {
         const mesh = obj.mesh;
         const v0 = obj.v0;
         const theta = obj.theta;
-        mesh.position.x = left + v0 * Math.cos(theta) * delta;
-        mesh.position.y = bottom + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
+        mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
+        mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
     });
     renderer.render(scene, camera);
 }
