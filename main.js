@@ -1,7 +1,9 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 let scene, camera, renderer;
 let raycaster, mouse;
+let loader;
 
 let sliceLine;
 let isSlicing = false;
@@ -27,26 +29,32 @@ function init() {
     renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
+
     camera.position.z = 5;
+    scene.background = new THREE.Color(0xFFFFFF);
 
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
 
-    // Lighting
-    // const light = new THREE.DirectionalLight(0xffffff, 1);
-    // light.position.set(1, 1, 1);
-    // scene.add(light);
+    loader = new GLTFLoader();
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 4); // Color: White, Intensity: 1.5
+    scene.add(ambientLight);
+
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 1, 1);
+    scene.add(light);
 
     const coord = getHeight(camera);
     topY = coord.y;
     rightX = coord.x;
 
-    const geometry = new THREE.PlaneGeometry( 1, 1 );
-    const texture = new THREE.TextureLoader().load("/sushi.png");
-    const material = new THREE.MeshBasicMaterial( { map: texture } );
-    const mesh = new THREE.Mesh(geometry, material);
+    // const geometry = new THREE.PlaneGeometry( 1, 1 );
+    // const texture = new THREE.TextureLoader().load("/sushi.png");
+    // const material = new THREE.MeshBasicMaterial( { map: texture } );
+    // const mesh = new THREE.Mesh(geometry, material);
 
-    scene.add(mesh);
+    // scene.add(mesh);
 }
 
 function randomTick() {
@@ -65,11 +73,53 @@ function animate() {
         const theta = obj.theta;
         mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
         mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
+        // mesh.rotation.z += 0.01;
+        // mesh.rotation.x += 0.01;
+        // mesh.rotation.y += 0.01;
     });
     renderer.render(scene, camera);
 }
 
 function spawnFood() {
+    loader.load(
+        '/chocolate_cake/scene.gltf', 
+        function (gltf) {
+            const textureLoader = new THREE.TextureLoader();
+            const texture = textureLoader.load('/chocolate_cake/textures/Cake_Baked_baseColor.jpeg');
+            const metallicRoughnessTexture = textureLoader.load("/chocolate_cake/textures/Cake_Baked_metallicRoughness.png");
+            const normalTexture = textureLoader.load("/chocolate_cake/textures/Cake_Baked_normal.jpeg");
+            texture.colorSpace = THREE.SRGBColorSpace
+            gltf.scene.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    child.material.map = texture;
+                    child.material.normalMap = normalTexture;
+                    child.material.metalnessMap = metallicRoughnessTexture;
+                    child.material.roughnessMap = metallicRoughnessTexture;
+        
+                    // Optional: Adjust metalness/roughness values
+                    child.material.metalness = 0.5; // Adjust for brightness
+                    child.material.roughness = 0.3; // Lower for shinier surface
+                    
+                    child.material.needsUpdate = true;
+                }
+            });
+            gltf.scene.position.set(0, 0, 0);
+            gltf.scene.scale.set(10, 10, 10);
+            scene.add(gltf.scene);
+
+            const { v0, theta } = getRandomLaunch();
+            meshObjs.push({ mesh: gltf.scene, v0: v0, theta: theta, start: Date.now()});
+        },
+        function (xhr) {
+            console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+        },
+        function (error) {
+            console.error('An error happened', error);
+        }
+    );
+}
+
+function spawnFood2D() {
     const foodStr = foodStrs[Math.floor(Math.random() * foodStrs.length)];
     const geometry = new THREE.PlaneGeometry( 1, 1 );
     const texture = new THREE.TextureLoader().load(foodStr);

@@ -1,0 +1,8 @@
+Model Information:
+* title:	Chocolate Cake
+* source:	https://sketchfab.com/3d-models/chocolate-cake-7a1c5357e44b4c63993d7842b188047a
+* author:	RPSebb (https://sketchfab.com/RPSebb)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
