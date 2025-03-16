@@ -1,9 +1,16 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Line2 } from "three/examples/jsm/lines/Line2.js";
+import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
+import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 
 let scene, camera, renderer;
 let raycaster, mouse;
-let loader;
+let gtlfLoader;
+
+const MAX_SLICE_PTS = 100; // Max points in slice line
+let sliceLineGeometry;
+const mouseDragPositions = [];
 
 let sliceLine;
 let isSlicing = false;
@@ -16,7 +23,8 @@ let topY;
 const meshObjs = [];
 const foodStrs = ["/sushi.png", "/apple.png"];
 
-const sliceMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 }); // Green slicing line
+// TODO: remove mesh when it leaves screen (maybe also remove the line)
+// TODO: check scene.children to see if line is in scene
 
 init();
 randomTick();
@@ -36,32 +44,42 @@ function init() {
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
 
-    loader = new GLTFLoader();
+    gtlfLoader = new GLTFLoader();
 
+    // Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 4); // Color: White, Intensity: 1.5
-    scene.add(ambientLight);
-
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(1, 1, 1);
+    scene.add(ambientLight);
     scene.add(light);
 
     const coord = getHeight(camera);
     topY = coord.y;
     rightX = coord.x;
 
-    // const geometry = new THREE.PlaneGeometry( 1, 1 );
-    // const texture = new THREE.TextureLoader().load("/sushi.png");
-    // const material = new THREE.MeshBasicMaterial( { map: texture } );
-    // const mesh = new THREE.Mesh(geometry, material);
+    // Create empty slice line
+    const emptyPositions = new Float32Array(MAX_SLICE_PTS * 3).fill(0); // Flattened positiosn
+    sliceLineGeometry = new LineGeometry();
+    sliceLineGeometry.setPositions(emptyPositions);
 
-    // scene.add(mesh);
+    // Slice Line material
+    const material = new LineMaterial({
+        color: 0xff0000,
+        linewidth: 4,
+        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
+        transparent: true,
+        opacity: 1.0,
+      });
+    const sliceLine = new Line2(sliceLineGeometry, material);
+    scene.add(sliceLine);
 }
 
 function randomTick() {
     setTimeout(() => {
         spawnFood();
         randomTick();
-    }, Math.floor(Math.random() * 2000 + 1));
+    }, 5000)
+    // Math.floor(Math.random() * 2000 + 1)); // FIXME: was 2000
 }
 
 function animate() {
@@ -73,15 +91,17 @@ function animate() {
         const theta = obj.theta;
         mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
         mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
+        
         // mesh.rotation.z += 0.01;
         // mesh.rotation.x += 0.01;
         // mesh.rotation.y += 0.01;
     });
+
     renderer.render(scene, camera);
 }
 
 function spawnFood() {
-    loader.load(
+    gtlfLoader.load(
         '/chocolate_cake/scene.gltf', 
         function (gltf) {
             const textureLoader = new THREE.TextureLoader();
@@ -133,6 +153,7 @@ function spawnFood2D() {
 }
 
 function getRandomLaunch() {
+    // TODO: add random launch point from -width to 0
     const v0 = Math.random() * 10 + 5; // Speed 5 to 15
     const thetaDeg = Math.random() * 50 + 30; // 30 to 80 degrees
     const theta = THREE.MathUtils.degToRad(thetaDeg);
@@ -151,21 +172,20 @@ function getHeight(camera) {
     return { x: rightX, y: topY };
 }
 
-window.addEventListener("mousedown", () => {
+window.addEventListener("mousedown", (event) => {
     isSlicing = true;
-    slicePoints = [];
-
-    if (sliceLine) {
-        scene.remove(sliceLine);
-        sliceLine.geometry.dispose();
-        sliceLine.material.dispose();
-    }
+    slicePoints = []; // FIXME: maybe slicePoints.length = 0? Because registering point when didn't slice
 });
 
 window.addEventListener("mouseup", () => {
     isSlicing = false;
-    updateSliceLine();
-    console.log(slicePoints);
+
+    mouseDragPositions.length = 0;
+  
+    const emptyPositions = new Float32Array(MAX_SLICE_PTS * 3).fill(0);
+    sliceLineGeometry.setPositions(emptyPositions);
+    sliceLineGeometry.computeBoundingSphere();
+
     if (slicePoints.length >= 2) {
         updateScore();
     }
@@ -174,28 +194,30 @@ window.addEventListener("mouseup", () => {
 window.addEventListener("mousemove", (event) => {
     if (!isSlicing) return;
 
-    // Normalize mouse poition from -1 to 1
+    // Normalize mouse position from -1 to 1
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    // Check for intersections between mouse and scene objects
     raycaster.setFromCamera(mouse, camera);
-    // const intersects = raycaster.intersectObject(mesh);
     const intersects = raycaster.intersectObjects(scene.children);
 
     if (intersects.length > 0) {
-        slicePoints.push(intersects[0].point);
-        updateSliceLine();
-        // console.log("Intersected object", intersects);
+        const topMesh = intersects[0];
+        slicePoints.push(topMesh.point);
     }
+
+    // Calculate mouse position based on screen size
+    const x = rightX * mouse.x;
+    const y = topY * mouse.y;
+
+    mouseDragPositions.push(new THREE.Vector3(x, y, 0));
+    if (mouseDragPositions.length > MAX_SLICE_PTS) mouseDragPositions.shift();
+    const flattenedPositions = mouseDragPositions.flatMap(vec => [vec.x, vec.y, vec.z]);
+
+    sliceLineGeometry.setPositions(flattenedPositions);
+    sliceLineGeometry.computeBoundingSphere(); 
 });
-
-function updateSliceLine() {
-    if (slicePoints.length < 2) return; // Need 2 points for line
-
-    const sliceGeometry = new THREE.BufferGeometry().setFromPoints(slicePoints);
-    sliceLine = new THREE.Line(sliceGeometry, sliceMaterial);
-    scene.add(sliceLine);
-}
 
 function updateScore() {
     score++;
