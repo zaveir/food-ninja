@@ -8,11 +8,14 @@ let scene, camera, renderer;
 let raycaster, mouse;
 let gtlfLoader;
 
-const MAX_SLICE_PTS = 100; // Max points in slice line
+const bgGroup = new THREE.Group();
+const usrGroup = new THREE.Group();
+const foodsGroup = new THREE.Group();
+
+const MAX_SLICE_PTS = 10; // Max points in slice line
 let sliceLineGeometry;
 const mouseDragPositions = [];
 
-let sliceLine;
 let isSlicing = false;
 let slicePoints = [];
 let score = 0;
@@ -22,9 +25,6 @@ let topY;
 
 const meshObjs = [];
 const foodStrs = ["/sushi.png", "/apple.png"];
-
-// TODO: remove mesh when it leaves screen (maybe also remove the line)
-// TODO: check scene.children to see if line is in scene
 
 init();
 randomTick();
@@ -50,8 +50,9 @@ function init() {
     const ambientLight = new THREE.AmbientLight(0xffffff, 4); // Color: White, Intensity: 1.5
     const light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(1, 1, 1);
-    scene.add(ambientLight);
-    scene.add(light);
+    bgGroup.add(ambientLight);
+    bgGroup.add(light);
+    scene.add(bgGroup);
 
     const coord = getHeight(camera);
     topY = coord.y;
@@ -71,7 +72,10 @@ function init() {
         opacity: 1.0,
       });
     const sliceLine = new Line2(sliceLineGeometry, material);
-    scene.add(sliceLine);
+    usrGroup.add(sliceLine);
+    scene.add(usrGroup);
+
+    scene.add(foodsGroup);
 }
 
 function randomTick() {
@@ -125,7 +129,8 @@ function spawnFood() {
             });
             gltf.scene.position.set(0, 0, 0);
             gltf.scene.scale.set(10, 10, 10);
-            scene.add(gltf.scene);
+            foodsGroup.add(gltf.scene);
+            // scene.add(foodsGroup);
 
             const { v0, theta } = getRandomLaunch();
             meshObjs.push({ mesh: gltf.scene, v0: v0, theta: theta, start: Date.now()});
@@ -174,11 +179,13 @@ function getHeight(camera) {
 
 window.addEventListener("mousedown", (event) => {
     isSlicing = true;
-    slicePoints = []; // FIXME: maybe slicePoints.length = 0? Because registering point when didn't slice
+    slicePoints.length = 0;
 });
 
 window.addEventListener("mouseup", () => {
     isSlicing = false;
+
+    console.log(foodsGroup.children);
 
     mouseDragPositions.length = 0;
   
@@ -200,9 +207,10 @@ window.addEventListener("mousemove", (event) => {
 
     // Check for intersections between mouse and scene objects
     raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(scene.children);
+    const intersects = raycaster.intersectObjects(foodsGroup.children);
 
     if (intersects.length > 0) {
+        console.log("intersects");
         const topMesh = intersects[0];
         slicePoints.push(topMesh.point);
     }
