@@ -31,6 +31,8 @@ const foodStrs = ["/sushi.png", "/apple.png"];
 
 let models = new Map();
 
+// TODO: create splatter behind sliced mesh
+
 // Create a frustum object
 const frustum = new THREE.Frustum();
 const cameraViewProjectionMatrix = new THREE.Matrix4();
@@ -134,7 +136,10 @@ function init() {
 
     camera.position.z = 5;
     renderer.localClippingEnabled = true;
-    scene.background = new THREE.Color(0xFFFFFF);
+
+    const textureLoader = new THREE.TextureLoader();
+    const texture = textureLoader.load("/wood.png");
+    scene.background = texture;
 
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
@@ -186,38 +191,16 @@ function randomTick() {
     }, Math.floor(Math.random() * 2000 + 1));
 }
 
-let count = 0;
 function animate() {
     requestAnimationFrame(animate);
-
-    // FIXME: trying to remove mesh when it leaves screen
-    // console.log(meshObjs);
-    // for (let i = meshObjs.length - 1; i >= 0; i--) {
-    //     const mesh = meshObjs[i].mesh;
-
-    //     if (count < 1) {
-    //         console.log(mesh);
-    //         count++;
-    //     }
-
-    //     if (mesh && mesh.geometry && count < 1) {
-    //         console.log("object exists");
-    //         if (isObjectVisible(mesh, camera)) continue;
-
-    //     console.log("Mesh left the screen, removing...");
-    //     // meshObjs.splice(i, 1);
-    //     // foodsGroup.remove(mesh);
-    //     }
-    //     count++;        
-    // }
 
     meshObjs.forEach((obj) => {
         const delta = (Date.now() - obj.start) / 1000;
         const mesh = obj.mesh;
         const v0 = obj.v0;
         const theta = obj.theta;
-        // mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
-        // mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
+        mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
+        mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
         
         // mesh.rotation.x += 0.01;
         // mesh.rotation.y += 0.01;
