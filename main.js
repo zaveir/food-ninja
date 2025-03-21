@@ -8,7 +8,7 @@ import Model from "./Model.js";
 
 let scene, camera, renderer;
 let raycaster, mouse;
-let gtlfLoader;
+let textureLoader, gtlfLoader;
 
 const bgGroup = new THREE.Group();
 const usrGroup = new THREE.Group();
@@ -31,48 +31,10 @@ const foodStrs = ["/sushi.png", "/apple.png"];
 
 let models = new Map();
 
-// TODO: create splatter behind sliced mesh
-
-// Create a frustum object
-const frustum = new THREE.Frustum();
-const cameraViewProjectionMatrix = new THREE.Matrix4();
-
-// Function to check if an object is visible
-function isObjectVisible(object, camera) {
-  camera.updateMatrixWorld(); // Ensure the camera is updated
-  cameraViewProjectionMatrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
-  frustum.setFromProjectionMatrix(cameraViewProjectionMatrix);
-
-  return frustum.intersectsObject(object); // Returns true if visible, false if not
-}
-
 init();
 randomTick();
 // spawnFood();
 animate();
-
-// // Create mesh
-// const geometry = new THREE.BoxGeometry(2, 2, 2);
-// const material = new THREE.MeshStandardMaterial({ color: 0x0077ff });
-// const mesh = new THREE.Mesh(geometry, material);
-// // scene.add(mesh);
-
-// const plane = new THREE.Plane(new THREE.Vector3(1, 0, 0), 0); // Slicing along the X-axis
-
-// // Apply slicing (simplified for testing)
-// const slicedGeometries = sliceGeometryWithPlane(geometry, plane);
-// const slicedMesh1 = new THREE.Mesh(slicedGeometries[0], material);
-// const slicedMesh2 = new THREE.Mesh(slicedGeometries[1], material);
-
-// mesh.position.x = 2;
-
-// slicedMesh1.position.x = -2;
-// slicedMesh2.position.x = 2;
-
-// // Step 5: Add to the scene
-// scene.add(slicedMesh1);
-// scene.add(slicedMesh2);
-
 
 function sliceGeometryWithPlane(geometry, plane) {
     const frontVertices = [];
@@ -137,7 +99,7 @@ function init() {
     camera.position.z = 5;
     renderer.localClippingEnabled = true;
 
-    const textureLoader = new THREE.TextureLoader();
+    textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load("/wood.png");
     scene.background = texture;
 
@@ -299,9 +261,18 @@ window.addEventListener("mouseup", () => {
     sliceLineGeometry.setPositions(emptyPositions);
     sliceLineGeometry.computeBoundingSphere();
 
-    if (slicePoints.length > 0) updateScore();
+    if (slicePoints.length > 0) {
+        updateScore();
+        if (slicedMesh) disappear(slicedMesh);
 
-    if (slicedMesh) disappear(slicedMesh);
+        const planeGeo = new THREE.PlaneGeometry( 1, 1 );
+        const splatterTexture = new THREE.TextureLoader().load("/splatter.png");
+        const planeMaterial = new THREE.MeshBasicMaterial( { map: splatterTexture, transparent: true, alphaTest: 0.5 } );
+        const plane = new THREE.Mesh(planeGeo, planeMaterial);
+        plane.position.set(...slicedMesh.position);
+        scene.add(plane); // TODO: add to splatter group
+    }
+
     slicedMesh = null;
 });
 
@@ -356,7 +327,6 @@ window.addEventListener("mousemove", (event) => {
     const intersects = raycaster.intersectObjects(foodsGroup.children);
 
     if (intersects.length > 0) {
-        console.log("intersects");
         const topMesh = intersects[0];
         slicedMesh = topMesh.object;
         slicePoints.push(topMesh.point);
@@ -373,6 +343,18 @@ window.addEventListener("mousemove", (event) => {
     sliceLineGeometry.setPositions(flattenedPositions);
     sliceLineGeometry.computeBoundingSphere(); 
 });
+
+function average(vectors) {
+    let sumX = 0;
+    let sumY = 0;
+    let sumZ = 0;
+    for (const vector of vectors) {
+        sumX += vector.x;
+        sumY += vector.y;
+        sumZ += vector.z
+    }
+    return new THREE.Vector3(sumX / vectors.length, sumY / vectors.length, sumZ / vectors.length);
+}
 
 function updateScore() {
     score++;
