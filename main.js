@@ -13,6 +13,7 @@ let textureLoader, gtlfLoader;
 const bgGroup = new THREE.Group();
 const usrGroup = new THREE.Group();
 const foodsGroup = new THREE.Group();
+const splatterGroup = new THREE.Group();
 
 const MAX_SLICE_PTS = 10; // Max points in slice line
 let sliceLineGeometry;
@@ -138,6 +139,7 @@ function init() {
     scene.add(usrGroup);
 
     scene.add(foodsGroup);
+    scene.add(splatterGroup);
 
     // Load Models
     const chocolateCake = new Model("/chocolate_cake/scene.gltf", "/chocolate_cake/textures/Cake_Baked_baseColor.jpeg", "/chocolate_cake/textures/Cake_Baked_metallicRoughness.png", "/chocolate_cake/textures/Cake_Baked_normal.jpeg", 0.5);
@@ -164,9 +166,9 @@ function animate() {
         mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
         mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
         
-        // mesh.rotation.x += 0.01;
-        // mesh.rotation.y += 0.01;
-        // mesh.rotation.z += 0.01;
+        mesh.rotation.x += obj.xRot;
+        mesh.rotation.y += obj.yRot;
+        mesh.rotation.z += obj.zRot;
     });
 
     renderer.render(scene, camera);
@@ -200,8 +202,8 @@ function loadModel(model) {
                     child.scale.set(model.scale, model.scale, model.scale);
                     foodsGroup.add(child);
 
-                    const { v0, theta } = getRandomLaunch();
-                    meshObjs.push({ mesh: child, v0: v0, theta: theta, start: Date.now()});
+                    const { v0, theta, xRot, yRot, zRot } = getRandomLaunch();
+                    meshObjs.push({ mesh: child, v0: v0, theta: theta, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
                 }
             });
         },
@@ -214,25 +216,15 @@ function loadModel(model) {
     );
 }
 
-function spawnFood2D() {
-    const foodStr = foodStrs[Math.floor(Math.random() * foodStrs.length)];
-    const geometry = new THREE.PlaneGeometry( 1, 1 );
-    const texture = new THREE.TextureLoader().load(foodStr);
-    const material = new THREE.MeshBasicMaterial( { map: texture } );
-    const mesh = new THREE.Mesh(geometry, material);
-
-    scene.add(mesh);
-
-    const { v0, theta } = getRandomLaunch();
-    meshObjs.push({ mesh: mesh, v0: v0, theta: theta, start: Date.now()});
-}
-
 function getRandomLaunch() {
     // TODO: add random launch point from -width to 0
     const v0 = Math.random() * 10 + 5; // Speed 5 to 15
-    const thetaDeg = Math.random() * 50 + 30; // 30 to 80 degrees
+    const thetaDeg = Math.random() * 50 + 30; // Launch angle 30 to 80 degrees
     const theta = THREE.MathUtils.degToRad(thetaDeg);
-    return { v0, theta };
+    const xRot = Math.random() * 0.01; // 0 to 0.2 each frame
+    const yRot = Math.random() * 0.01;
+    const zRot = Math.random() * 0.01;
+    return { v0, theta, xRot, yRot, zRot };
 }
 
 function getHeight(camera) {
@@ -270,7 +262,7 @@ window.addEventListener("mouseup", () => {
         const planeMaterial = new THREE.MeshBasicMaterial( { map: splatterTexture, transparent: true, alphaTest: 0.5 } );
         const plane = new THREE.Mesh(planeGeo, planeMaterial);
         plane.position.set(...slicedMesh.position);
-        scene.add(plane); // TODO: add to splatter group
+        splatterGroup.add(plane);
     }
 
     slicedMesh = null;
@@ -281,6 +273,52 @@ function disappear(mesh) {
     mesh.geometry.dispose();
     mesh.material.dispose();
     mesh = null;
+}
+
+window.addEventListener("mousemove", (event) => {
+    if (!isSlicing) return;
+
+    // Normalize mouse position from -1 to 1
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Check for intersections between mouse and scene objects
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(foodsGroup.children);
+
+    if (intersects.length > 0) {
+        const topMesh = intersects[0];
+        slicedMesh = topMesh.object;
+        slicePoints.push(topMesh.point);
+    }
+
+    // Calculate mouse position based on screen size
+    const x = rightX * mouse.x;
+    const y = topY * mouse.y;
+
+    mouseDragPositions.push(new THREE.Vector3(x, y, 0));
+    if (mouseDragPositions.length > MAX_SLICE_PTS) mouseDragPositions.shift();
+    const flattenedPositions = mouseDragPositions.flatMap(vec => [vec.x, vec.y, vec.z]);
+
+    sliceLineGeometry.setPositions(flattenedPositions);
+    sliceLineGeometry.computeBoundingSphere(); 
+});
+
+function updateScore() {
+    score++;
+    document.getElementById("score").innerHTML = score;
+}
+
+function average(vectors) {
+    let sumX = 0;
+    let sumY = 0;
+    let sumZ = 0;
+    for (const vector of vectors) {
+        sumX += vector.x;
+        sumY += vector.y;
+        sumZ += vector.z
+    }
+    return new THREE.Vector3(sumX / vectors.length, sumY / vectors.length, sumZ / vectors.length);
 }
 
 /**
@@ -315,49 +353,16 @@ function clip(mesh) {
         // clippedParts.forEach(mesh => scene.add(mesh));
 }
 
-window.addEventListener("mousemove", (event) => {
-    if (!isSlicing) return;
+function spawnFood2D() {
+    const foodStr = foodStrs[Math.floor(Math.random() * foodStrs.length)];
+    const geometry = new THREE.PlaneGeometry( 1, 1 );
+    const texture = new THREE.TextureLoader().load(foodStr);
+    const material = new THREE.MeshBasicMaterial( { map: texture } );
+    const mesh = new THREE.Mesh(geometry, material);
 
-    // Normalize mouse position from -1 to 1
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    scene.add(mesh);
 
-    // Check for intersections between mouse and scene objects
-    raycaster.setFromCamera(mouse, camera);
-    const intersects = raycaster.intersectObjects(foodsGroup.children);
-
-    if (intersects.length > 0) {
-        const topMesh = intersects[0];
-        slicedMesh = topMesh.object;
-        slicePoints.push(topMesh.point);
-    }
-
-    // Calculate mouse position based on screen size
-    const x = rightX * mouse.x;
-    const y = topY * mouse.y;
-
-    mouseDragPositions.push(new THREE.Vector3(x, y, 0));
-    if (mouseDragPositions.length > MAX_SLICE_PTS) mouseDragPositions.shift();
-    const flattenedPositions = mouseDragPositions.flatMap(vec => [vec.x, vec.y, vec.z]);
-
-    sliceLineGeometry.setPositions(flattenedPositions);
-    sliceLineGeometry.computeBoundingSphere(); 
-});
-
-function average(vectors) {
-    let sumX = 0;
-    let sumY = 0;
-    let sumZ = 0;
-    for (const vector of vectors) {
-        sumX += vector.x;
-        sumY += vector.y;
-        sumZ += vector.z
-    }
-    return new THREE.Vector3(sumX / vectors.length, sumY / vectors.length, sumZ / vectors.length);
-}
-
-function updateScore() {
-    score++;
-    document.getElementById("score").innerHTML = score;
+    const { v0, theta } = getRandomLaunch();
+    meshObjs.push({ mesh: mesh, v0: v0, theta: theta, start: Date.now()});
 }
   
