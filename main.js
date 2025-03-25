@@ -6,6 +6,14 @@ import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { MeshBVH } from 'three-mesh-bvh';
 import Model from "./Model.js";
 
+/**
+ * TODO
+ * Score format
+ * Mouse and slicer
+ * Darker wood background
+ * Slice a balloon
+ */
+
 let scene, camera, renderer;
 let raycaster, mouse;
 let textureLoader, gtlfLoader;
@@ -36,58 +44,6 @@ init();
 randomTick();
 // spawnFood();
 animate();
-
-function sliceGeometryWithPlane(geometry, plane) {
-    const frontVertices = [];
-    const backVertices = [];
-    const frontIndices = [];
-    const backIndices = [];
-
-    const positionAttribute = geometry.getAttribute('position');
-    const vertices = [];
-    for (let i = 0; i < positionAttribute.count; i++) {
-        vertices.push(new THREE.Vector3().fromBufferAttribute(positionAttribute, i));
-    }
-
-    // Split vertices based on their position relative to the slicing plane
-    for (let i = 0; i < vertices.length; i += 3) {
-        const v0 = vertices[i];
-        const v1 = vertices[i + 1];
-        const v2 = vertices[i + 2];
-
-        // Check which side of the plane each vertex is on
-        const side0 = plane.distanceToPoint(v0);
-        const side1 = plane.distanceToPoint(v1);
-        const side2 = plane.distanceToPoint(v2);
-
-        // For each vertex, check if it’s in front of or behind the plane
-        if (side0 >= 0) frontVertices.push(v0); else backVertices.push(v0);
-        if (side1 >= 0) frontVertices.push(v1); else backVertices.push(v1);
-        if (side2 >= 0) frontVertices.push(v2); else backVertices.push(v2);
-
-        // Add indices to front and back based on the plane
-        if (side0 >= 0 && side1 >= 0 && side2 >= 0) {
-            frontIndices.push(i, i + 1, i + 2); // All vertices are on the front side
-        } else if (side0 <= 0 && side1 <= 0 && side2 <= 0) {
-            backIndices.push(i, i + 1, i + 2); // All vertices are on the back side
-        }
-    }
-
-    // Create new geometries for the front and back parts
-    const frontGeometry = new THREE.BufferGeometry();
-    const backGeometry = new THREE.BufferGeometry();
-
-    // Set up position attributes for front and back geometries
-    frontGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(frontVertices.flat()), 3));
-    backGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(backVertices.flat()), 3));
-
-    // Set up index attributes for front and back geometries
-    frontGeometry.setIndex(frontIndices);
-    backGeometry.setIndex(backIndices);
-
-    // Return the two split geometries
-    return [frontGeometry, backGeometry];
-}
 
 function init() {
     // Scene setup
@@ -307,6 +263,58 @@ window.addEventListener("mousemove", (event) => {
 function updateScore() {
     score++;
     document.getElementById("score").innerHTML = score;
+}
+
+function sliceGeometryWithPlane(geometry, plane) {
+    const frontVertices = [];
+    const backVertices = [];
+    const frontIndices = [];
+    const backIndices = [];
+
+    const positionAttribute = geometry.getAttribute('position');
+    const vertices = [];
+    for (let i = 0; i < positionAttribute.count; i++) {
+        vertices.push(new THREE.Vector3().fromBufferAttribute(positionAttribute, i));
+    }
+
+    // Split vertices based on their position relative to the slicing plane
+    for (let i = 0; i < vertices.length; i += 3) {
+        const v0 = vertices[i];
+        const v1 = vertices[i + 1];
+        const v2 = vertices[i + 2];
+
+        // Check which side of the plane each vertex is on
+        const side0 = plane.distanceToPoint(v0);
+        const side1 = plane.distanceToPoint(v1);
+        const side2 = plane.distanceToPoint(v2);
+
+        // For each vertex, check if it’s in front of or behind the plane
+        if (side0 >= 0) frontVertices.push(v0); else backVertices.push(v0);
+        if (side1 >= 0) frontVertices.push(v1); else backVertices.push(v1);
+        if (side2 >= 0) frontVertices.push(v2); else backVertices.push(v2);
+
+        // Add indices to front and back based on the plane
+        if (side0 >= 0 && side1 >= 0 && side2 >= 0) {
+            frontIndices.push(i, i + 1, i + 2); // All vertices are on the front side
+        } else if (side0 <= 0 && side1 <= 0 && side2 <= 0) {
+            backIndices.push(i, i + 1, i + 2); // All vertices are on the back side
+        }
+    }
+
+    // Create new geometries for the front and back parts
+    const frontGeometry = new THREE.BufferGeometry();
+    const backGeometry = new THREE.BufferGeometry();
+
+    // Set up position attributes for front and back geometries
+    frontGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(frontVertices.flat()), 3));
+    backGeometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(backVertices.flat()), 3));
+
+    // Set up index attributes for front and back geometries
+    frontGeometry.setIndex(frontIndices);
+    backGeometry.setIndex(backIndices);
+
+    // Return the two split geometries
+    return [frontGeometry, backGeometry];
 }
 
 function average(vectors) {
