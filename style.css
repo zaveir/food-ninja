@@ -1,9 +1,19 @@
+canvas {
+    background-color: black !important;
+    display: block;
+  }
+  html, body {
+    background: black;
+    margin: 0;
+    overflow: hidden;
+  }
+
 #score {
     display:flex;
     position: absolute;
-    width: 100px;
+    width: 200px;
     height: 100px;
-    padding:10px;
+    padding: 10px;
     justify-content: center;
     align-items:center;
     text-align: center;

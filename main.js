@@ -8,9 +8,7 @@ import Model from "./Model.js";
 
 /**
  * TODO
- * Score format
  * Mouse and slicer
- * Darker wood background
  * Slice a balloon
  */
 
@@ -49,15 +47,17 @@ function init() {
     // Scene setup
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ alpha: false, premultipliedAlpha: false, antialias: true});
     renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 1);
+    renderer.getContext().clearColor(0, 0, 0, 1);
     document.body.appendChild(renderer.domElement);
 
     camera.position.z = 5;
     renderer.localClippingEnabled = true;
 
     textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load("/wood.png");
+    const texture = textureLoader.load("/wood2.png");
     scene.background = texture;
 
     raycaster = new THREE.Raycaster();
@@ -87,7 +87,7 @@ function init() {
         color: 0xff0000,
         linewidth: 4,
         resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
-        transparent: true,
+        // transparent: true,
         opacity: 1.0,
       });
     const sliceLine = new Line2(sliceLineGeometry, material);
@@ -119,7 +119,7 @@ function animate() {
         const mesh = obj.mesh;
         const v0 = obj.v0;
         const theta = obj.theta;
-        mesh.position.x = -1 * rightX + v0 * Math.cos(theta) * delta;
+        mesh.position.x = obj.x0 + v0 * Math.cos(theta) * delta;
         mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
         
         mesh.rotation.x += obj.xRot;
@@ -158,8 +158,8 @@ function loadModel(model) {
                     child.scale.set(model.scale, model.scale, model.scale);
                     foodsGroup.add(child);
 
-                    const { v0, theta, xRot, yRot, zRot } = getRandomLaunch();
-                    meshObjs.push({ mesh: child, v0: v0, theta: theta, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
+                    const { v0, theta, x0, xRot, yRot, zRot } = getRandomLaunch();
+                    meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
                 }
             });
         },
@@ -173,14 +173,14 @@ function loadModel(model) {
 }
 
 function getRandomLaunch() {
-    // TODO: add random launch point from -width to 0
     const v0 = Math.random() * 10 + 5; // Speed 5 to 15
-    const thetaDeg = Math.random() * 50 + 30; // Launch angle 30 to 80 degrees
+    const thetaDeg = Math.random() * 50 + 40; // Launch angle 40 to 90 degrees
     const theta = THREE.MathUtils.degToRad(thetaDeg);
-    const xRot = Math.random() * 0.01; // 0 to 0.2 each frame
+    const x0 = -1 * Math.random() * rightX;
+    const xRot = Math.random() * 0.01; // 0 to 0.01 each frame
     const yRot = Math.random() * 0.01;
     const zRot = Math.random() * 0.01;
-    return { v0, theta, xRot, yRot, zRot };
+    return { v0, theta, x0, xRot, yRot, zRot };
 }
 
 function getHeight(camera) {
@@ -262,7 +262,7 @@ window.addEventListener("mousemove", (event) => {
 
 function updateScore() {
     score++;
-    document.getElementById("score").innerHTML = score;
+    document.getElementById("score").innerHTML = `Score: ${score}`;
 }
 
 function sliceGeometryWithPlane(geometry, plane) {
