@@ -39,8 +39,8 @@ const foodStrs = ["/sushi.png", "/apple.png"];
 let models = new Map();
 
 init();
-randomTick();
-// spawnFood();
+// randomTick();
+spawnFood();
 animate();
 
 function init() {
@@ -97,11 +97,22 @@ function init() {
     scene.add(foodsGroup);
     scene.add(splatterGroup);
 
-    // Load Models
+    createModels();
+}
+
+function createModels() {
     const chocolateCake = new Model("/chocolate_cake/scene.gltf", "/chocolate_cake/textures/Cake_Baked_baseColor.jpeg", "/chocolate_cake/textures/Cake_Baked_metallicRoughness.png", "/chocolate_cake/textures/Cake_Baked_normal.jpeg", 0.5);
-    // const croissant = new Model("/starbucks_butter_croissant/scene.gltf", "/starbucks_butter_croissant/textures/ps_sbxCroissant_baseColor.jpeg", "/starbucks_butter_croissant/textures/ps_sbxCroissant_metallicRoughness.png", "/starbucks_butter_croissant/textures/ps_sbxCroissant_normal.jpeg", 10);
-    models.set("chocolateCake", chocolateCake);
-    // models.set("croissant", croissant);
+    const iceCream = new Model("/ice_cream/scene.gltf", "/ice_cream/textures/ice_cream_baseColor.jpeg", "/ice_cream/textures/ice_cream_metallicRoughness.png", "/ice_cream/textures/ice_cream_normal.png", 3, 3 * Math.PI / 2);
+    const orange = new Model("/cara_cara_orange/scene.gltf", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg","/cara_cara_orange/textures/fr_caraOrange_normal.jpeg", 10);
+    const yogurt = new Model("/yogurt/scene.gltf", "/yogurt/textures/yaourt_baseColor.png", "/yogurt/textures/yaourt_metallicRoughness.png", "/yogurt/textures/yaourt_normal.png", 1.5);
+    const lime = new Model("/persian_lime/scene.gltf", "/persian_lime/textures/fr_persianLime_diffuse.jpeg", "/persian_lime/textures/fr_persianLime_specularGlossiness.png", "/persian_lime/textures/fr_persianLime_normal.jpeg", 15);
+    const carrot = new Model("/carrot_free/scene.gltf", "/carrot_free/textures/Material_baseColor.png", "/carrot_free/textures/Material_metallicRoughness.png", "/carrot_free/textures/Material_normal.png", 0.1, Math.PI / 2);
+    // models.set("chocolateCake", chocolateCake); // GOOD
+    // models.set("iceCream", iceCream); // GOOD
+    // models.set("orange", orange); // GOOD
+    // models.set("yogurt", yogurt); // GOOD
+    // models.set("lime", lime); // GOOD
+    // models.set("carrot", carrot); // GOOD
 }
 
 function randomTick() {
@@ -122,7 +133,7 @@ function animate() {
         mesh.position.x = obj.x0 + v0 * Math.cos(theta) * delta;
         mesh.position.y = -1 * topY + v0 * Math.sin(theta) * delta - 4.9 * delta ** 2;
         
-        mesh.rotation.x += obj.xRot;
+        mesh.rotation.x = obj.xRot0 + delta * obj.xRot;
         mesh.rotation.y += obj.yRot;
         mesh.rotation.z += obj.zRot;
     });
@@ -159,7 +170,8 @@ function loadModel(model) {
                     foodsGroup.add(child);
 
                     const { v0, theta, x0, xRot, yRot, zRot } = getRandomLaunch();
-                    meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
+                    meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot0: model.xRot0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
+                    console.log(meshObjs);
                 }
             });
         },
@@ -177,9 +189,9 @@ function getRandomLaunch() {
     const thetaDeg = Math.random() * 50 + 40; // Launch angle 40 to 90 degrees
     const theta = THREE.MathUtils.degToRad(thetaDeg);
     const x0 = -1 * Math.random() * rightX;
-    const xRot = Math.random() * 0.01; // 0 to 0.01 each frame
-    const yRot = Math.random() * 0.01;
-    const zRot = Math.random() * 0.01;
+    const xRot = Math.random() * 2 - 1; // -1 to 1 (since x rotation calculated specially)
+    const yRot = Math.random() * 0.02 - 0.01; // -0.01 to 0.01
+    const zRot = Math.random() * 0.02 - 0.01; // -0.01 to 0.01
     return { v0, theta, x0, xRot, yRot, zRot };
 }
 

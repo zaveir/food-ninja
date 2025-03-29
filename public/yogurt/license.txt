@@ -1,0 +1,8 @@
+Model Information:
+* title:	Yogurt
+* source:	https://sketchfab.com/3d-models/yogurt-7cf010b5a4d245c8ae07be585aadc2b8
+* author:	stylo0 (https://sketchfab.com/stylo0)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

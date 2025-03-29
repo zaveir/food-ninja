@@ -1,0 +1,8 @@
+Model Information:
+* title:	Persian Lime
+* source:	https://sketchfab.com/3d-models/persian-lime-4cb33c14ab3747c38f290429dacbe49a
+* author:	inciprocal (https://sketchfab.com/inciprocal.com)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

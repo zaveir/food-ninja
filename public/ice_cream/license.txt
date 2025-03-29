@@ -1,0 +1,8 @@
+Model Information:
+* title:	Ice cream
+* source:	https://sketchfab.com/3d-models/ice-cream-7641286d8a104573b78ca22bda3c0458
+* author:	devmate_ (https://sketchfab.com/devmate_)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
