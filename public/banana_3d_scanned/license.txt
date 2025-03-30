@@ -1,0 +1,8 @@
+Model Information:
+* title:	Banana 3D Scanned
+* source:	https://sketchfab.com/3d-models/banana-3d-scanned-151daf50278f437a9c7259627ac0613b
+* author:	a-python-script (https://sketchfab.com/a-python-script)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

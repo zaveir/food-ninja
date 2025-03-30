@@ -1,0 +1,317 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.7455441355705261,
+        0.7262117266654968,
+        1.5611572265625
+      ],
+      "min": [
+        -0.744208037853241,
+        -0.7492972016334534,
+        0.024337712675333023
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 3912,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.9994610548019409,
+        0.9999422430992126,
+        0.9999212622642517
+      ],
+      "min": [
+        -0.9986172914505005,
+        -0.999447762966156,
+        -1.0
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.9172303080558777,
+        0.9215466380119324,
+        0.999046266078949,
+        1.0
+      ],
+      "min": [
+        -0.9606465697288513,
+        -0.9889237880706787,
+        -0.9999000430107117,
+        -1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.8681565523147583,
+        0.9748064279556274
+      ],
+      "min": [
+        0.02519369125366211,
+        0.04075521230697632
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 2608,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.8681565523147583,
+        0.9748064279556274
+      ],
+      "min": [
+        0.02519369125366211,
+        0.04075521230697632
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 5216,
+      "componentType": 5126,
+      "count": 326,
+      "max": [
+        0.8681565523147583,
+        0.9748064279556274
+      ],
+      "min": [
+        0.02519369125366211,
+        0.04075521230697632
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 1410,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "RPSebb (https://sketchfab.com/RPSebb)",
+      "license": "SKETCHFAB Standard (https://sketchfab.com/licenses)",
+      "source": "https://sketchfab.com/3d-models/red-apple-7a179f2b4837457eafa66c2f7094d280",
+      "title": "Red Apple"
+    },
+    "generator": "Sketchfab-16.53.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 5640,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 7824,
+      "byteOffset": 5640,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 7824,
+      "byteOffset": 13464,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 5216,
+      "byteOffset": 21288,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 26504,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Apple_Baked_baseColor.png"
+    },
+    {
+      "uri": "textures/Apple_Baked_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Apple_Baked_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Apple_Baked",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Apple Cut Low.001_Apple Baked_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.07693275064229965,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.7082502222165375e-17,
+        -0.07693275064229965,
+        0.0,
+        0.0,
+        0.07693275064229965,
+        1.7082502222165375e-17,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "6d82c29b629b416b9e01725c073548a7.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        -0.999999999999996,
+        -8.742277980456488e-08,
+        0.0,
+        0.0,
+        -1.4242978711041864e-14,
+        1.6292067994694293e-07,
+        0.9999999999999866,
+        0.0,
+        -8.742277980456371e-08,
+        0.9999999999999828,
+        -1.6292067983592062e-07,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Apple Cut Low.001"
+    },
+    {
+      "mesh": 0,
+      "name": "Apple Cut Low.001_Apple Baked_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

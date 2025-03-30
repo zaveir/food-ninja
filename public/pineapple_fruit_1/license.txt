@@ -1,0 +1,8 @@
+Model Information:
+* title:	Pineapple fruit 1
+* source:	https://sketchfab.com/3d-models/pineapple-fruit-1-a8f593e72fa24d619991bdf0dc125de3
+* author:	B4D7 (https://sketchfab.com/B4D7)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

@@ -1,0 +1,317 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.6968805193901062,
+        0.5283302068710327,
+        0.526046633720398
+      ],
+      "min": [
+        -0.6968805193901062,
+        -0.5265875458717346,
+        -0.5171358585357666
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 3432,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.9967414140701294,
+        0.9946258068084717,
+        0.9974333047866821
+      ],
+      "min": [
+        -0.9967414140701294,
+        -0.9826231598854065,
+        -0.9953178763389587
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.4618379473686218,
+        0.8483850359916687,
+        0.9964067935943604,
+        1.0
+      ],
+      "min": [
+        -0.3420894742012024,
+        -0.9998769760131836,
+        -0.9999720454216003,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.991146445274353,
+        0.5890496373176575
+      ],
+      "min": [
+        0.008853599429130554,
+        0.008853599429130554
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 2288,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.991146445274353,
+        0.5890496373176575
+      ],
+      "min": [
+        0.008853599429130554,
+        0.008853599429130554
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 4576,
+      "componentType": 5126,
+      "count": 286,
+      "max": [
+        0.991146445274353,
+        0.5890496373176575
+      ],
+      "min": [
+        0.008853599429130554,
+        0.008853599429130554
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 1356,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "RPSebb (https://sketchfab.com/RPSebb)",
+      "license": "SKETCHFAB Standard (https://sketchfab.com/licenses)",
+      "source": "https://sketchfab.com/3d-models/watermelon-526d00c728a24311bfbec50bf54142ca",
+      "title": "Watermelon"
+    },
+    "generator": "Sketchfab-16.53.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 5424,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 6864,
+      "byteOffset": 5424,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 6864,
+      "byteOffset": 12288,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 4576,
+      "byteOffset": 19152,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 23728,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/WaterMelon_Baked_baseColor.png"
+    },
+    {
+      "uri": "textures/WaterMelon_Baked_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/WaterMelon_Baked_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "WaterMelon_Baked",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "WaterMelon low.002_WaterMelon Baked_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5
+          },
+          "indices": 6,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.002439024392515421,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        5.415722076386011e-19,
+        -0.002439024392515421,
+        0.0,
+        0.0,
+        0.002439024392515421,
+        5.415722076386011e-19,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "32ddb79be5ec4f7793034978a46a8da7.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        100.0,
+        0.0,
+        0.0,
+        0.0,
+        -0.0,
+        -1.629206793918314e-05,
+        -99.99999999999868,
+        0.0,
+        0.0,
+        99.99999999999868,
+        -1.629206793918314e-05,
+        0.0,
+        -144.15939331054688,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "WaterMelon low.002"
+    },
+    {
+      "mesh": 0,
+      "name": "WaterMelon low.002_WaterMelon Baked_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

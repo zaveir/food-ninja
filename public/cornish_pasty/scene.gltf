@@ -1,0 +1,285 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 12738,
+      "max": [
+        101.83965301513672,
+        101.66204071044922,
+        83.06611633300781
+      ],
+      "min": [
+        -102.69784545898438,
+        -10.198738098144531,
+        -17.81425666809082
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 152856,
+      "componentType": 5126,
+      "count": 12738,
+      "max": [
+        0.9999945163726807,
+        0.999985933303833,
+        0.9999648332595825
+      ],
+      "min": [
+        -0.9998809099197388,
+        -0.9999675750732422,
+        -0.9999817609786987
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 12738,
+      "max": [
+        0.8508052825927734,
+        0.9999971985816956,
+        0.9999886155128479,
+        1.0
+      ],
+      "min": [
+        -0.46016329526901245,
+        -0.9999988079071045,
+        -0.9999904036521912,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 12738,
+      "max": [
+        0.9959999918937683,
+        0.9525025486946106
+      ],
+      "min": [
+        0.004000000189989805,
+        0.004000000189989805
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 75072,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "kimlaughton (https://sketchfab.com/kimlaughton)",
+      "license": "SKETCHFAB Standard (https://sketchfab.com/licenses)",
+      "source": "https://sketchfab.com/3d-models/cornish-pasty-ab8a18c5988e430784432101c3b1f1f5",
+      "title": "Cornish Pasty"
+    },
+    "generator": "Sketchfab-16.7.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 300288,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 101904,
+      "byteOffset": 300288,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 305712,
+      "byteOffset": 402192,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 203808,
+      "byteOffset": 707904,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 911712,
+      "uri": "scene.bin"
+    }
+  ],
+  "images": [
+    {
+      "uri": "textures/Default_Material_baseColor.png"
+    },
+    {
+      "uri": "textures/Default_Material_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Default_Material_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "Default_Material",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.0,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Pasty_Default Material_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3
+          },
+          "indices": 4,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        -1.0,
+        -2.8327693431939985e-16,
+        -1.60812262295773e-16,
+        0.0,
+        1.6081226229577292e-16,
+        2.2204460492503136e-16,
+        -1.0,
+        0.0,
+        2.832769343193999e-16,
+        -1.0,
+        -2.2204460492503128e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        -1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "ba98d83efd8e4d1fbb5bb625874fe550.fbx"
+    },
+    {
+      "children": [
+        3
+      ],
+      "name": "RootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "matrix": [
+        0.09350353045566841,
+        2.029192788246918e-20,
+        -0.0037823552865286305,
+        0.0,
+        -0.0001202899647746263,
+        0.07619590315883813,
+        -0.0029736858472484513,
+        0.0,
+        0.0018100922859943787,
+        0.0017492018785639557,
+        0.04474725570965073,
+        0.0,
+        -0.017891347408294678,
+        1.0065175294876099,
+        0.9138885140419006,
+        1.0
+      ],
+      "name": "Pasty"
+    },
+    {
+      "mesh": 0,
+      "name": "Pasty_Default Material_0"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

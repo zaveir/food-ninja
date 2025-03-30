@@ -1,0 +1,8 @@
+Model Information:
+* title:	Strawberry
+* source:	https://sketchfab.com/3d-models/strawberry-f3c0b8034e2840d78a99cff7610e283c
+* author:	minimoku (https://sketchfab.com/minimoku)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

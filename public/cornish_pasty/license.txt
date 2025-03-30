@@ -1,0 +1,8 @@
+Model Information:
+* title:	Cornish Pasty
+* source:	https://sketchfab.com/3d-models/cornish-pasty-ab8a18c5988e430784432101c3b1f1f5
+* author:	kimlaughton (https://sketchfab.com/kimlaughton)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
