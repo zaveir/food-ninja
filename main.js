@@ -9,7 +9,6 @@ import Model from "./Model.js";
 /**
  * TODO
  * Mouse and slicer
- * Slice a balloon
  */
 
 let scene, camera, renderer;
@@ -21,6 +20,7 @@ const usrGroup = new THREE.Group();
 const foodsGroup = new THREE.Group();
 const splatterGroup = new THREE.Group();
 
+let swordMesh;
 const MAX_SLICE_PTS = 10; // Max points in slice line
 let sliceLineGeometry;
 const mouseDragPositions = [];
@@ -39,7 +39,7 @@ const foodStrs = ["/sushi.png", "/apple.png"];
 let models = new Map();
 
 init();
-randomTick();
+// randomTick();
 spawnFood();
 animate();
 
@@ -66,16 +66,25 @@ function init() {
     gtlfLoader = new GLTFLoader();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 4);
-    const light = new THREE.DirectionalLight(0xffffff, 1);
-    light.position.set(1, 1, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    const light = new THREE.DirectionalLight(0xffffff, 2);
+    const light2 = new THREE.DirectionalLight(0xffffff, 2);
+    const light3 = new THREE.DirectionalLight(0xffffff, 2);
+    light.position.set(0, 1, 0);
+    light2.position.set(-0.5, 1, 0);
+    light3.position.set(0.5, 1, 0);
     bgGroup.add(ambientLight);
     bgGroup.add(light);
+    bgGroup.add(light2);
+    bgGroup.add(light3);
     scene.add(bgGroup);
 
     const coord = getHeight(camera);
     topY = coord.y;
     rightX = coord.x;
+
+    const swordModel = new Model("/knife_low-poly/scene.gltf", "/knife_low-poly/textures/Knife_baseColor.png", "/knife_low-poly/textures/Knife_metallicRoughness.png", "/knife_low-poly/textures/Knife_normal.png", 0.03);
+    loadModel(swordModel, false);
 
     // Create empty slice line
     const emptyPositions = new Float32Array(MAX_SLICE_PTS * 3).fill(0); // Flattened positiosn
@@ -84,7 +93,7 @@ function init() {
 
     // Slice Line material
     const material = new LineMaterial({
-        color: 0xff0000,
+        color: 0xffffff,
         linewidth: 4,
         resolution: new THREE.Vector2(window.innerWidth, window.innerHeight),
         // transparent: true,
@@ -126,7 +135,7 @@ function createModels() {
     const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
     const pineapple = new Model("/pineapple_fruit_1/scene.gltf", "/pineapple_fruit_1/textures/default_baseColor.jpeg", null, null, 1.5);
     // models.set("chocolateCake", chocolateCake);
-    // models.set("croissant", croissant);
+    models.set("croissant", croissant);
     // models.set("iceCream", iceCream); 
     // models.set("donutSprinkled", donutSprinkled);
     // models.set("donut", donut);
@@ -142,13 +151,13 @@ function createModels() {
     // models.set("carrot", carrot); 
     // models.set("broccoli", broccoli); 
     // models.set("cakepop", cakepop);
-    models.set("balloon", balloon); 
+    // models.set("balloon", balloon); 
     // models.set("oatCake", oatCake);
     // models.set("poundCake", poundCake);
     // models.set("cornishPastry", cornishPastry);
     // models.set("banana", banana);
     // models.set("strawberry", strawberry);
-    models.set("pineapple", pineapple);
+    // models.set("pineapple", pineapple);
 }
 
 function randomTick() {
@@ -181,10 +190,10 @@ function spawnFood() {
     const keys = Array.from(models.keys());
     const index = Math.floor(Math.random() * keys.length);
     const model = models.get(keys[index]);
-    loadModel(model);
+    loadModel(model, true);
 }
 
-function loadModel(model) {
+function loadModel(model, isFood = true) {
     gtlfLoader.load(
         model.gltfLoc, 
         function (gltf) {
@@ -203,10 +212,17 @@ function loadModel(model) {
 
                     child.position.set(0, 0, 0);
                     child.scale.set(model.scale, model.scale, model.scale);
-                    foodsGroup.add(child);
 
-                    const { v0, theta, x0, xRot, yRot, zRot } = getRandomLaunch();
-                    meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot0: model.xRot0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
+                    if (isFood) {
+                        foodsGroup.add(child);
+                        const { v0, theta, x0, xRot, yRot, zRot } = getRandomLaunch();
+                        meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot0: model.xRot0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
+                    } else {
+                        swordMesh = child;
+                        usrGroup.add(swordMesh);
+                        swordMesh.position.z = 1;
+                        swordMesh.rotation.x = Math.PI / 2; // TODO: angle this up a bit so light shines but the tip of sword is mouse
+                    }
                 }
             });
         },
@@ -289,11 +305,18 @@ function disappear(mesh) {
 }
 
 window.addEventListener("mousemove", (event) => {
-    if (!isSlicing) return;
-
     // Normalize mouse position from -1 to 1
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Calculate mouse position based on screen size
+    const x = rightX * mouse.x;
+    const y = topY * mouse.y;
+
+    swordMesh.position.x = x;
+    swordMesh.position.y = y;
+    
+    if (!isSlicing) return;
 
     // Check for intersections between mouse and scene objects
     raycaster.setFromCamera(mouse, camera);
@@ -304,10 +327,6 @@ window.addEventListener("mousemove", (event) => {
         slicedMesh = topMesh.object;
         slicePoints.push(topMesh.point);
     }
-
-    // Calculate mouse position based on screen size
-    const x = rightX * mouse.x;
-    const y = topY * mouse.y;
 
     mouseDragPositions.push(new THREE.Vector3(x, y, 0));
     if (mouseDragPositions.length > MAX_SLICE_PTS) mouseDragPositions.shift();
