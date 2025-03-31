@@ -148,7 +148,7 @@ function createModels() {
     // models.set("cornishPastry", cornishPastry);
     // models.set("banana", banana);
     // models.set("strawberry", strawberry);
-    // models.set("pineapple", pineapple);
+    models.set("pineapple", pineapple);
 }
 
 function randomTick() {
@@ -207,7 +207,6 @@ function loadModel(model) {
 
                     const { v0, theta, x0, xRot, yRot, zRot } = getRandomLaunch();
                     meshObjs.push({ mesh: child, v0: v0, theta: theta, x0: x0, xRot0: model.xRot0, xRot: xRot, yRot: yRot, zRot: zRot, start: Date.now()});
-                    console.log(meshObjs);
                 }
             });
         },
@@ -258,11 +257,21 @@ window.addEventListener("mouseup", () => {
     sliceLineGeometry.computeBoundingSphere();
 
     if (slicePoints.length > 0) {
-        updateScore();
         if (slicedMesh) disappear(slicedMesh);
 
-        const planeGeo = new THREE.PlaneGeometry( 1, 1 );
-        const splatterTexture = new THREE.TextureLoader().load("/splatter.png");
+        let planeGeo;
+        let splatterTexture;
+
+        if (slicedMesh.name === "shar") {
+            updateScore(-1);
+            planeGeo = new THREE.PlaneGeometry(1.5, 1.5);
+            splatterTexture = new THREE.TextureLoader().load("/pop.png");
+        } else {
+            updateScore(1);
+            planeGeo = new THREE.PlaneGeometry(1.5, 1.5);
+            splatterTexture = new THREE.TextureLoader().load("/splatter.png");
+        }
+
         const planeMaterial = new THREE.MeshBasicMaterial( { map: splatterTexture, transparent: true, alphaTest: 0.5 } );
         const plane = new THREE.Mesh(planeGeo, planeMaterial);
         plane.position.set(...slicedMesh.position);
@@ -308,8 +317,8 @@ window.addEventListener("mousemove", (event) => {
     sliceLineGeometry.computeBoundingSphere(); 
 });
 
-function updateScore() {
-    score++;
+function updateScore(value) {
+    score += value;
     document.getElementById("score").innerHTML = `Score: ${score}`;
 }
 
