@@ -2,16 +2,38 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; }
-		</style>
-        <link rel="stylesheet" href="./style.css">
+		<title>Food Ninja</title>
+        <link rel="stylesheet" href="index.css">
 	</head>
 	<body>
-		<script type="module" src="/main.js"></script>
-        <div id="score">
-            Score: 0
+		<!-- <script type="module" src="index.js"></script> -->
+        <p>Welcome to Food Ninja!</p>
+        <p>Choose Your Game:</p>
+        <div class="container">
+            <div></div>
+            <div>Fruit</div>
+            <div>Dessert</div>  
+            <div>Beginner</div>
+            <div>
+                <a href="start.html?difficulty=beginner&mode=fruit">Play</a>
+            </div>  
+            <div>
+                <a href="start.html?difficulty=beginner&mode=dessert">Play</a>
+            </div>  
+            <div>Intermediate</div>
+            <div>
+                <a href="start.html?difficulty=intermediate&mode=fruit">Play</a>
+            </div>  
+            <div>
+                <a href="start.html?difficulty=intermediate&mode=dessert">Play</a>
+            </div>  
+            <div>Advanced</div>
+            <div>
+                <a href="start.html?difficulty=advanced&mode=fruit">Play</a>
+            </div>  
+            <div>
+                <a href="start.html?difficulty=advanced&mode=dessert">Play</a>
+            </div>  
         </div>
 	</body>
 </html>

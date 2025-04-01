@@ -1,12 +1,6 @@
-canvas {
-    background-color: black !important;
-    display: block;
-  }
-  html, body {
-    background: black;
+body {
     margin: 0;
-    overflow: hidden;
-  }
+}
 
 #score {
     display:flex;

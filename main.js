@@ -8,7 +8,11 @@ import Model from "./Model.js";
 
 /**
  * TODO
- * Mouse and slicer
+ * Intro 
+ * 30 seconds timer
+ * End game screen
+ * Game levels: beginner (no lost points), intermediate, difficult
+ * Maybe 2 choices: difficulty level, and food mode (fruit vs dessert vs both)
  */
 
 let scene, camera, renderer;
@@ -45,6 +49,10 @@ init();
 // randomTick();
 spawnFood();
 animate();
+
+window.setTimeout(() => {
+    window.location.href = "end.html";
+}, 1000);
 
 function init() {
     // Scene setup

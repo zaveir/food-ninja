@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Food Ninja</title>
+        <!-- <link rel="stylesheet" href="./start.css"> -->
+	</head>
+	<body>
+        <p>You Have Chosen</p>
+        <div style="display: flex;">
+            <p>Difficulty: </p>
+            <p id="difficulty"></p>
+        </div>
+        <div style="display: flex;">
+            <p>Mode: </p>
+            <p id="mode"></p>
+        </div>
+        <p>Click and drag to slice foods</p>
+        <p id="balloonMsg">Avoid popping any balloons</p>
+        <a href="main.html">START</a>
+        <a href="index.html">Choose another level</a>
+	</body>
+    <script>
+        window.onload = function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const difficulty = urlParams.get("difficulty");
+            const mode = urlParams.get("mode");
+            document.getElementById("difficulty").innerHTML = difficulty;
+            document.getElementById("mode").innerHTML = mode;
+            document.getElementById("balloonMsg").style.display = difficulty === "beginner" ? "none" : "block";
+        };
+    </script>
+</html>
