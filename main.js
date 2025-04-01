@@ -21,6 +21,9 @@ const foodsGroup = new THREE.Group();
 const splatterGroup = new THREE.Group();
 
 let swordMesh;
+let swordLen; // Length of sword
+let swordRotate; // Angle of rotation to make sword point into screen
+let swordTilt; // Angle of tilt of sword about x so it gleams
 const MAX_SLICE_PTS = 10; // Max points in slice line
 let sliceLineGeometry;
 const mouseDragPositions = [];
@@ -84,6 +87,9 @@ function init() {
     rightX = coord.x;
 
     const swordModel = new Model("/knife_low-poly/scene.gltf", "/knife_low-poly/textures/Knife_baseColor.png", "/knife_low-poly/textures/Knife_metallicRoughness.png", "/knife_low-poly/textures/Knife_normal.png", 0.03);
+    swordLen = 1.8;
+    swordRotate = Math.PI / 2;
+    swordTilt = Math.PI / 6;
     loadModel(swordModel, false);
 
     // Create empty slice line
@@ -220,8 +226,8 @@ function loadModel(model, isFood = true) {
                     } else {
                         swordMesh = child;
                         usrGroup.add(swordMesh);
-                        swordMesh.position.z = 1;
-                        swordMesh.rotation.x = Math.PI / 2; // TODO: angle this up a bit so light shines but the tip of sword is mouse
+                        swordMesh.position.z = swordLen / 2 * Math.cos(swordTilt); // Tilting sword decreases distance in z
+                        swordMesh.rotation.x = swordRotate + swordTilt; // Rotate sword to point in screen, then tilt a bit so it gleams
                     }
                 }
             });
@@ -314,7 +320,7 @@ window.addEventListener("mousemove", (event) => {
     const y = topY * mouse.y;
 
     swordMesh.position.x = x;
-    swordMesh.position.y = y;
+    swordMesh.position.y = y - Math.sin(swordTilt); // Tilting sword means sword center Y below mouse Y (when Y is negative on bottom half of screen)
     
     if (!isSlicing) return;
 
