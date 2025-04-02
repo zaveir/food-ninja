@@ -134,10 +134,22 @@ function updateTimer() {
 }
 
 function randomTick() {
+    let low, range;
+    if (difficulty === "beginner") {
+        low = 1000;
+        range = 4000; // 1 to 5 seconds
+    } else if (difficulty === "intermediate") {
+        low = 500;
+        range = 3000; // 0.5 to 3.5 seconds
+    } else {
+        low = 1;
+        range = 2000; // 0 to 2 seconds
+    }
+    const interval = Math.floor(Math.random() * range + low);
     setTimeout(() => {
         spawnFood();
         randomTick();
-    }, Math.floor(Math.random() * 2000 + 1));
+    }, interval);
 }
 
 function createFruits() {
@@ -270,11 +282,23 @@ function loadModel(model, isFood = true) {
 }
 
 function getRandomLaunch() {
-    const v0 = Math.random() * 10 + 5; // Speed 5 to 15
+    let low, range;
+    if (difficulty === "beginner") {
+        low = 10;
+        range = 0; // 10
+    } else if (difficulty === "intermediate") {
+        low = 8;
+        range = 4; // 8 to 12
+    } else {
+        low = 5;
+        range = 10; // 5 to 15
+    }
+
+    const v0 = Math.random() * range + low;
     const thetaDeg = Math.random() * 50 + 40; // Launch angle 40 to 90 degrees
     const theta = THREE.MathUtils.degToRad(thetaDeg);
     const x0 = -1 * Math.random() * rightX;
-    const xRot = Math.random() * 2 - 1; // -1 to 1 (since x rotation calculated specially)
+    const xRot = Math.random() * 2 - 1; // -1 to 1 (since x rotation calculated differently)
     const yRot = Math.random() * 0.02 - 0.01; // -0.01 to 0.01
     const zRot = Math.random() * 0.02 - 0.01; // -0.01 to 0.01
     return { v0, theta, x0, xRot, yRot, zRot };
