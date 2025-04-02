@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    position: absolute;
+    width: 100%;
+}
+
+.container > div {
+    padding: 20px;
+    text-align:center;
+    font-family: 'Brush Script MT';
+    font-size: 40px;
+}
+
+#score{
+    flex: 1 1 auto;
+    text-align: left;
+}
+
+#timer {
+    flex: 1 1 auto;
+    text-align: right;
+}

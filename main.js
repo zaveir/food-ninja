@@ -41,18 +41,33 @@ let rightX;
 let topY;
 
 const meshObjs = [];
-const foodStrs = ["/sushi.png", "/apple.png"];
-
+// const foodStrs = ["/sushi.png", "/apple.png"];
 let models = new Map();
 
+let seconds = 30;
+
 init();
+setInterval(updateTimer, 1000);
 // randomTick();
 spawnFood();
 animate();
 
-window.setTimeout(() => {
-    window.location.href = "end.html";
-}, 1000);
+function updateTimer() {
+    document.getElementById("timer").innerHTML = seconds;
+    
+    if (seconds === 0) {
+        window.location.href = "end.html";
+    }
+
+    seconds--;
+}
+
+function randomTick() {
+    setTimeout(() => {
+        spawnFood();
+        randomTick();
+    }, Math.floor(Math.random() * 2000 + 1));
+}
 
 function init() {
     // Scene setup
@@ -172,13 +187,6 @@ function createModels() {
     // models.set("banana", banana);
     // models.set("strawberry", strawberry);
     // models.set("pineapple", pineapple);
-}
-
-function randomTick() {
-    setTimeout(() => {
-        spawnFood();
-        randomTick();
-    }, Math.floor(Math.random() * 2000 + 1));
 }
 
 function animate() {
