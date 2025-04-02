@@ -3,13 +3,11 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { MeshBVH } from 'three-mesh-bvh';
 import Model from "./Model.js";
 
 /**
  * TODO
  * Intro 
- * 30 seconds timer
  * End game screen
  * Game levels: beginner (no lost points), intermediate, difficult
  * Maybe 2 choices: difficulty level, and food mode (fruit vs dessert vs both)
@@ -31,43 +29,30 @@ let swordTilt; // Angle of tilt of sword about x so it gleams
 const MAX_SLICE_PTS = 10; // Max points in slice line
 let sliceLineGeometry;
 const mouseDragPositions = [];
-
 let isSlicing = false;
 let slicePoints = [];
 let slicedMesh;
 let score = 0;
 
-let rightX;
-let topY;
+let rightX, topY;
 
 const meshObjs = [];
-// const foodStrs = ["/sushi.png", "/apple.png"];
 let models = new Map();
 
 let seconds = 30;
+let difficulty, mode;
 
-init();
-setInterval(updateTimer, 1000);
-// randomTick();
-spawnFood();
-animate();
+window.onload = function(){
+    const urlParams = new URLSearchParams(window.location.search);
+    difficulty = urlParams.get("difficulty");
+    mode = urlParams.get("mode");
 
-function updateTimer() {
-    document.getElementById("timer").innerHTML = seconds;
-    
-    if (seconds === 0) {
-        window.location.href = "end.html";
-    }
-
-    seconds--;
-}
-
-function randomTick() {
-    setTimeout(() => {
-        spawnFood();
-        randomTick();
-    }, Math.floor(Math.random() * 2000 + 1));
-}
+    init();
+    setInterval(updateTimer, 1000);
+    randomTick();
+    // spawnFood();
+    animate();
+};
 
 function init() {
     // Scene setup
@@ -135,58 +120,85 @@ function init() {
     scene.add(foodsGroup);
     scene.add(splatterGroup);
 
-    createModels();
+    mode === "fruit" ? createFruits() : createDesserts();
 }
 
-function createModels() {
+function updateTimer() {
+    document.getElementById("timer").innerHTML = seconds;
+    
+    if (seconds === 0) {
+        window.location.href = "end.html";
+    } 
+
+    seconds--;
+}
+
+function randomTick() {
+    setTimeout(() => {
+        spawnFood();
+        randomTick();
+    }, Math.floor(Math.random() * 2000 + 1));
+}
+
+function createFruits() {
+    const orange = new Model("/cara_cara_orange/scene.gltf", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg","/cara_cara_orange/textures/fr_caraOrange_normal.jpeg", 10);
+    const watermelon = new Model("/watermelon/scene.gltf", "/watermelon/textures/WaterMelon_Baked_baseColor.png", "/watermelon/textures/WaterMelon_Baked_metallicRoughness.png", "/watermelon/textures/WaterMelon_Baked_normal.png", 1.4);
+    const apple = new Model("/red_apple/scene.gltf", "/red_apple/textures/Apple_Baked_baseColor.png", "/red_apple/textures/Apple_Baked_metallicRoughness.png", "/red_apple/textures/Apple_Baked_normal.png", 0.6, 3 * Math.PI / 2);
+    const pear = new Model("/lowpoly_pear/scene.gltf", "/lowpoly_pear/textures/Material.001_baseColor.png", "/lowpoly_pear/textures/Material.001_metallicRoughness.png", "/lowpoly_pear/textures/Material.001_normal.png", 0.4, 3 * Math.PI / 2);
+    const lemon = new Model("/lemon/scene.gltf", "/lemon/textures/Lemon_baseColor.png", "/lemon/textures/Lemon_metallicRoughness.png", "/lemon/textures/Lemon_normal.png", 0.1);
+    const lime = new Model("/persian_lime/scene.gltf", "/persian_lime/textures/fr_persianLime_diffuse.jpeg", "/persian_lime/textures/fr_persianLime_specularGlossiness.png", "/persian_lime/textures/fr_persianLime_normal.jpeg", 12);
+    const carrot = new Model("/carrot_free/scene.gltf", "/carrot_free/textures/Material_baseColor.png", "/carrot_free/textures/Material_metallicRoughness.png", "/carrot_free/textures/Material_normal.png", 0.18, Math.PI / 2);
+    const broccoli = new Model("/broccoli/broccoli_v3.gltf", "/broccoli/broccoli_brobody_Mat_BaseColor.png", "/broccoli/broccoli_brobody_Mat_AO-broccoli_brobody_Mat_Roughness-broccoli_brobody_Mat_Metallic.png", "/broccoli/broccoli_brobody_Mat_Normal.png", 5);
+    const balloon = new Model("/balloon/shar.gltf", "/balloon/textures/shar_DefaultMaterial_BaseColor.png", "/balloon/textures/shar_DefaultMaterial_OcclusionRoughnessMetallic.png", "/balloon/textures/shar_DefaultMaterial_Normal.png", 0.03);
+    const banana = new Model("/banana_3d_scanned/scene.gltf", "/banana_3d_scanned/textures/banana_baseColor.png", null, null, 5);
+    const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
+    const pineapple = new Model("/pineapple_fruit_1/scene.gltf", "/pineapple_fruit_1/textures/default_baseColor.jpeg", null, null, 1.5);
+    models.set("orange", orange); 
+    // models.set("watermelon", watermelon);
+    // models.set("apple", apple); 
+    // models.set("pear", pear);
+    // models.set("lemon", lemon);
+    // models.set("lime", lime); 
+    // models.set("carrot", carrot); 
+    // models.set("broccoli", broccoli); 
+    // models.set("cakepop", cakepop);
+    // models.set("banana", banana);
+    // models.set("strawberry", strawberry);
+    // models.set("pineapple", pineapple);
+    if (difficulty !== "beginner") {
+        models.set("balloon", balloon); 
+    }
+}
+
+function createDesserts() {
     const chocolateCake = new Model("/chocolate_cake/scene.gltf", "/chocolate_cake/textures/Cake_Baked_baseColor.jpeg", "/chocolate_cake/textures/Cake_Baked_metallicRoughness.png", "/chocolate_cake/textures/Cake_Baked_normal.jpeg", 0.5);
     const croissant = new Model("/starbucks_butter_croissant/scene.gltf", "/starbucks_butter_croissant/textures/ps_sbxCroissant_baseColor.jpeg", "/starbucks_butter_croissant/textures/ps_sbxCroissant_metallicRoughness.png", "/starbucks_butter_croissant/textures/ps_sbxCroissant_normal.jpeg", 9);
     const iceCream = new Model("/ice_cream/scene.gltf", "/ice_cream/textures/ice_cream_baseColor.jpeg", "/ice_cream/textures/ice_cream_metallicRoughness.png", "/ice_cream/textures/ice_cream_normal.png", 3, 3 * Math.PI / 2);
     const donutSprinkled = new Model("/realistic_sprinkled_doughnut_scan/scene.gltf", "/realistic_sprinkled_doughnut_scan/textures/poly_0_baseColor.jpeg", null, null, 3, Math.PI);
     const donut = new Model("/donut/scene.gltf", "/donut/textures/Donut_baseColor.png", null, "/donut/textures/Donut_normal.png", 0.4);
     const yeast = new Model("/3d_scanned_yeast_plait/scene.gltf", "/3d_scanned_yeast_plait/textures/yeast-dough_baseColor.png", null, null, 20);
-    const orange = new Model("/cara_cara_orange/scene.gltf", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg","/cara_cara_orange/textures/fr_caraOrange_normal.jpeg", 10);
     const yogurt = new Model("/yogurt/scene.gltf", "/yogurt/textures/yaourt_baseColor.png", "/yogurt/textures/yaourt_metallicRoughness.png", "/yogurt/textures/yaourt_normal.png", 1.5);
-    const watermelon = new Model("/watermelon/scene.gltf", "/watermelon/textures/WaterMelon_Baked_baseColor.png", "/watermelon/textures/WaterMelon_Baked_metallicRoughness.png", "/watermelon/textures/WaterMelon_Baked_normal.png", 1.4);
-    const apple = new Model("/red_apple/scene.gltf", "/red_apple/textures/Apple_Baked_baseColor.png", "/red_apple/textures/Apple_Baked_metallicRoughness.png", "/red_apple/textures/Apple_Baked_normal.png", 0.6, 3 * Math.PI / 2);
-    const pear = new Model("/lowpoly_pear/scene.gltf", "/lowpoly_pear/textures/Material.001_baseColor.png", "/lowpoly_pear/textures/Material.001_metallicRoughness.png", "/lowpoly_pear/textures/Material.001_normal.png", 0.4, 3 * Math.PI / 2);
-    const lemon = new Model("/lemon/scene.gltf", "/lemon/textures/Lemon_baseColor.png", "/lemon/textures/Lemon_metallicRoughness.png", "/lemon/textures/Lemon_normal.png", 0.1);
     const cake = new Model("/amandas_chocolate_birthday_cake_scan/scene.gltf", "/amandas_chocolate_birthday_cake_scan/textures/birthdaycake_u1_v1_baseColor.png", null, null, 0.08, Math.PI);
-    const lime = new Model("/persian_lime/scene.gltf", "/persian_lime/textures/fr_persianLime_diffuse.jpeg", "/persian_lime/textures/fr_persianLime_specularGlossiness.png", "/persian_lime/textures/fr_persianLime_normal.jpeg", 12);
-    const carrot = new Model("/carrot_free/scene.gltf", "/carrot_free/textures/Material_baseColor.png", "/carrot_free/textures/Material_metallicRoughness.png", "/carrot_free/textures/Material_normal.png", 0.18, Math.PI / 2);
-    const broccoli = new Model("/broccoli/broccoli_v3.gltf", "/broccoli/broccoli_brobody_Mat_BaseColor.png", "/broccoli/broccoli_brobody_Mat_AO-broccoli_brobody_Mat_Roughness-broccoli_brobody_Mat_Metallic.png", "/broccoli/broccoli_brobody_Mat_Normal.png", 5);
     const cakepop = new Model("/cakepop/Cake_ Pop.gltf", "/cakepop/Cake_Pop_bcolor.png", "/cakepop/Cake_Pop_ao-Cake_Pop_rough-Cake_Pop_metal.png", "/cakepop/Cake_Pop_norm.png", 0.1);
     const balloon = new Model("/balloon/shar.gltf", "/balloon/textures/shar_DefaultMaterial_BaseColor.png", "/balloon/textures/shar_DefaultMaterial_OcclusionRoughnessMetallic.png", "/balloon/textures/shar_DefaultMaterial_Normal.png", 0.03);
     const oatCake = new Model("/oatCake/Oat_Cake_FBX.gltf", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Base_Color.png", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Metallic.png", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Normal_DirectX.png", 0.08);
     const poundCake = new Model("/poundCake/Pound_Cake_FBX.gltf", "/poundCake/Pound_Cake_Texture4k/PoundCake__Base_Color.png", "/poundCake/Pound_Cake_Texture4k/PoundCake__Metallic.png", "/poundCake/Pound_Cake_Texture4k/PoundCake__Normal_DirectX.png", 0.07);
     const cornishPastry = new Model("/cornish_pasty/scene.gltf", "/cornish_pasty/textures/Default_Material_baseColor.png", "/cornish_pasty/textures/Default_Material_metallicRoughness.png", "/cornish_pasty/textures/Default_Material_normal.png", 0.006);
-    const banana = new Model("/banana_3d_scanned/scene.gltf", "/banana_3d_scanned/textures/banana_baseColor.png", null, null, 5);
-    const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
-    const pineapple = new Model("/pineapple_fruit_1/scene.gltf", "/pineapple_fruit_1/textures/default_baseColor.jpeg", null, null, 1.5);
     // models.set("chocolateCake", chocolateCake);
     models.set("croissant", croissant);
     // models.set("iceCream", iceCream); 
     // models.set("donutSprinkled", donutSprinkled);
     // models.set("donut", donut);
     // models.set("yeast", yeast);
-    // models.set("orange", orange); 
     // models.set("yogurt", yogurt); 
-    // models.set("watermelon", watermelon);
-    // models.set("apple", apple); 
-    // models.set("pear", pear);
-    // models.set("lemon", lemon);
     // models.set("cake", cake);
-    // models.set("lime", lime); 
-    // models.set("carrot", carrot); 
-    // models.set("broccoli", broccoli); 
     // models.set("cakepop", cakepop);
-    // models.set("balloon", balloon); 
     // models.set("oatCake", oatCake);
     // models.set("poundCake", poundCake);
     // models.set("cornishPastry", cornishPastry);
-    // models.set("banana", banana);
-    // models.set("strawberry", strawberry);
-    // models.set("pineapple", pineapple);
+    if (difficulty !== "beginner") {
+        models.set("balloon", balloon); 
+    }
 }
 
 function animate() {
