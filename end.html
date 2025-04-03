@@ -4,16 +4,31 @@
 		<meta charset="utf-8">
 		<title>Food Ninja</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="end.css">
 	</head>
 	<body>
-		<!-- <script type="module" src="/index.js"></script> -->
-        <div>
-            <p>End Game</p>
-            <p>Points: </p>
-            <p>Hit Rate: </p>
-            <p>Ranking: </p>
-            <a href="index.html">PLAY AGAIN</a>
+        <p>End Game</p>
+        <div class="container">
+            <p>Score: </p>
+            <p id="score"></p>
         </div>
-        
+        <div class="container">
+            <p>Hit Rate: </p>
+            <p id="rate"></p>
+        </div>
+        <div class="container">
+            <p>Ranking: </p>
+            <p id="ranking"></p>
+        </div>
+        <a href="index.html">PLAY AGAIN</a>
 	</body>
+    <script>
+        window.onload = function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const score = urlParams.get("score");
+            const total = urlParams.get("total");
+            document.getElementById("score").innerHTML = score;
+            document.getElementById("rate").innerHTML = `${score / total * 100}%`;
+        };
+    </script>
 </html>

@@ -6,34 +6,49 @@
         <link rel="stylesheet" href="index.css">
 	</head>
 	<body>
-		<!-- <script type="module" src="index.js"></script> -->
         <p>Welcome to Food Ninja!</p>
         <p>Choose Your Game:</p>
-        <div class="container">
-            <div></div>
-            <div>Fruit</div>
-            <div>Dessert</div>  
-            <div>Beginner</div>
-            <div>
-                <a href="start.html?difficulty=beginner&mode=fruit">Play</a>
-            </div>  
-            <div>
-                <a href="start.html?difficulty=beginner&mode=dessert">Play</a>
-            </div>  
-            <div>Intermediate</div>
-            <div>
-                <a href="start.html?difficulty=intermediate&mode=fruit">Play</a>
-            </div>  
-            <div>
-                <a href="start.html?difficulty=intermediate&mode=dessert">Play</a>
-            </div>  
-            <div>Advanced</div>
-            <div>
-                <a href="start.html?difficulty=advanced&mode=fruit">Play</a>
-            </div>  
-            <div>
-                <a href="start.html?difficulty=advanced&mode=dessert">Play</a>
-            </div>  
-        </div>
+        <form id="levelForm">
+            <p>Select a difficulty level:</p>
+            <input type="radio" id="beginner" name="difficulty" value="beginner">
+            <label for="beginner">Beginner</label>
+            <input type="radio" id="intermediate" name="difficulty" value="intermediate">
+            <label for="intermediate">Intermediate</label>
+            <input type="radio" id="advanced" name="difficulty" value="advanced">
+            <label for="advanced">Advanced</label>
+            <p>Select a food mode:</p>
+            <input type="radio" id="fruit" name="mode" value="fruit">
+            <label for="fruit">Fruit</label>
+            <input type="radio" id="dessert" name="mode" value="dessert">
+            <label for="dessert">Dessert</label>
+            <input type="submit" value="START"/>
+        </form>
 	</body>
+    <script>
+        window.onload = function() {
+            const levelForm = document.getElementById("levelForm");
+            levelForm.addEventListener("submit", (event) => {
+                event.preventDefault();
+                const levelForm = document.getElementById("levelForm");
+                const { difficulty, mode } = levelForm.elements;
+                let difficultySelection, modeSelection;
+
+                for (const radioButton of difficulty) {
+                    if (radioButton.checked) {
+                        difficultySelection = radioButton.value;
+                        break;
+                    }
+                }
+
+                for (const radioButton of mode) {
+                    if (radioButton.checked) {
+                        modeSelection = radioButton.value;
+                        break;
+                    }
+                }
+
+                window.location.href = `main.html?difficulty=${difficultySelection}&mode=${modeSelection}`;
+            });
+        }
+    </script>
 </html>

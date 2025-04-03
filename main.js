@@ -9,8 +9,6 @@ import Model from "./Model.js";
  * TODO
  * Intro 
  * End game screen
- * Game levels: beginner (no lost points), intermediate, difficult
- * Maybe 2 choices: difficulty level, and food mode (fruit vs dessert vs both)
  */
 
 let scene, camera, renderer;
@@ -127,7 +125,7 @@ function updateTimer() {
     document.getElementById("timer").innerHTML = seconds;
     
     if (seconds === 0) {
-        window.location.href = "end.html";
+        window.location.href = `end.html?score=${score}&total=${meshObjs.length}`;
     } 
 
     seconds--;
@@ -153,7 +151,7 @@ function randomTick() {
 }
 
 function createFruits() {
-    const orange = new Model("/cara_cara_orange/scene.gltf", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg","/cara_cara_orange/textures/fr_caraOrange_normal.jpeg", 10);
+    const orange = new Model("/cara_cara_orange/scene.gltf", "/cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg", "/cara_cara_orange/textures/fr_caraOrange_specularGlossiness.png","/cara_cara_orange/textures/fr_caraOrange_normal.jpeg", 10);
     const watermelon = new Model("/watermelon/scene.gltf", "/watermelon/textures/WaterMelon_Baked_baseColor.png", "/watermelon/textures/WaterMelon_Baked_metallicRoughness.png", "/watermelon/textures/WaterMelon_Baked_normal.png", 1.4);
     const apple = new Model("/red_apple/scene.gltf", "/red_apple/textures/Apple_Baked_baseColor.png", "/red_apple/textures/Apple_Baked_metallicRoughness.png", "/red_apple/textures/Apple_Baked_normal.png", 0.6, 3 * Math.PI / 2);
     const pear = new Model("/lowpoly_pear/scene.gltf", "/lowpoly_pear/textures/Material.001_baseColor.png", "/lowpoly_pear/textures/Material.001_metallicRoughness.png", "/lowpoly_pear/textures/Material.001_normal.png", 0.4, 3 * Math.PI / 2);
@@ -165,12 +163,12 @@ function createFruits() {
     const banana = new Model("/banana_3d_scanned/scene.gltf", "/banana_3d_scanned/textures/banana_baseColor.png", null, null, 5);
     const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
     const pineapple = new Model("/pineapple_fruit_1/scene.gltf", "/pineapple_fruit_1/textures/default_baseColor.jpeg", null, null, 1.5);
-    models.set("orange", orange); 
+    // models.set("orange", orange); 
     // models.set("watermelon", watermelon);
     // models.set("apple", apple); 
     // models.set("pear", pear);
     // models.set("lemon", lemon);
-    // models.set("lime", lime); 
+    models.set("lime", lime); 
     // models.set("carrot", carrot); 
     // models.set("broccoli", broccoli); 
     // models.set("cakepop", cakepop);

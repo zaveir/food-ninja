@@ -1,0 +1,9 @@
+.container {
+    display: flex;
+    background-color: yellow;
+}
+
+.container > * {
+    background-color: green;
+    padding: 10px;
+}
