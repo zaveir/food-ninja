@@ -75,7 +75,7 @@ function init() {
     gtlfLoader = new GLTFLoader();
 
     // Lighting
-    const ambientLight = new THREE.AmbientLight(0xffffff, 1);
+    const ambientLight = new THREE.AmbientLight(0xffffff, 2);
     const light = new THREE.DirectionalLight(0xffffff, 2);
     const light2 = new THREE.DirectionalLight(0xffffff, 2);
     const light3 = new THREE.DirectionalLight(0xffffff, 2);

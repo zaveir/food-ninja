@@ -1,9 +1,43 @@
-p {
-    font-family: 'Brush Script MT';
-    font-size: 40px;
+body {
+    background-image: url("/wood2.png");
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
 }
 
-.container {
+p {
+    /* font-family: 'Brush Script MT'; */
+    /* font-size: 40px; */
+}
+
+.card-group {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .card {
+    flex: auto;
+    padding: 1rem;
+    border: 2px solid lightgrey;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background-color: white;
+  }
+
+  .card.selected {
+    border-color: blue;
+    background-color: lightcyan;
+  }
+
+  .card h3 {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .card p {
+    margin: 0;
+  }
+
+/* .container {
     display: grid;
     grid-template-columns: auto auto auto;
     background-color: dodgerblue;
@@ -16,4 +50,4 @@ p {
     padding: 10px;
     font-size: 30px;
     text-align: center;
-}
+} */
