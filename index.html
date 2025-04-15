@@ -6,43 +6,40 @@
         <link rel="stylesheet" href="index.css">
 	</head>
 	<body>
-        <p>Welcome to Food Ninja!</p>
-          <form id="levelForm">
-            <p>Select a difficulty level:</p>
+        <h1>Welcome to Food Ninja!</h1>
+        <form id="levelForm">
+            <h2>Select a difficulty level</h2>
             <div class="card-group" data-group="difficulty">
               <label class="card" for="beginner">
                 <input type="radio" id="beginner" name="difficulty" value="beginner">
                 <h3>Beginner</h3>
-                <p>This is the first option.</p>
               </label>
         
               <label class="card" for="intermediate">
                 <input type="radio" id="intermediate" name="difficulty" value="intermediate">
                 <h3>Intermediate</h3>
-                <p>This is the second option.</p>
               </label>
         
               <label class="card" for="advanced">
                 <input type="radio" id="advanced" name="difficulty" value="advanced">
                 <h3>Advanced</h3>
-                <p>This is the third option.</p>
               </label>
             </div>
+            <p id="description"></p>
 
-            <p>Select a playing mode:</p>
+            <h2>Select a playing mode</h2>
             <div class="card-group" data-group="mode">
                 <label class="card" for="fruit">
                   <input type="radio" id="fruit" name="mode" value="fruit">
                   <h3>Fruit</h3>
-                  <p>This is the first option.</p>
                 </label>
           
                 <label class="card" for="dessert">
                   <input type="radio" id="dessert" name="mode" value="dessert">
                   <h3>Dessert</h3>
-                  <p>This is the second option.</p>
                 </label> 
             </div>
+            <br>
             <input type="submit" value="START"/>
         </form>
 
@@ -73,6 +70,17 @@
                     card.classList.add("selected"); // Add selected class to this radio
                     const input = card.querySelector("input[type='radio']");
                     input.checked = true;
+
+                    const forAttrib = card.getAttribute("for");
+                    const description = document.getElementById("description")
+
+                    if (forAttrib === "beginner") {
+                        description.innerText = "No ballons";
+                    } else if (forAttrib === "intermediate") {
+                        description.innerText = "Avoid ballons\nFoods come at faster speeds";
+                    } else if (forAttrib === "advanced") {
+                        description.innerText = "Even faster speeds";
+                    }
                 });
             });
         })
@@ -88,8 +96,8 @@
                 return;
             }
 
-            console.log(`main.html?difficulty=${difficulty.value}&mode=${mode.value}`);
-            // window.location.href = `main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
+            //console.log(`main.html?difficulty=${difficulty.value}&mode=${mode.value}`);
+            window.location.href = `main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
         });
 
         // window.onload = function() {

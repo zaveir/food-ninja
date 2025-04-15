@@ -4,50 +4,56 @@ body {
     background-size: 100vw 100vh;
 }
 
+@font-face {
+    font-family: Frijole;
+    src: url(Frijole/Frijole-Regular.ttf);
+}
+
+@font-face {
+    font-family: Sister;
+    src: url(Love_Ya_Like_A_Sister/LoveYaLikeASister-Regular.ttf);
+}
+
+h1 {
+    font-family: Frijole;
+}
+
+h2 {
+    font-family: Sister;
+}
+
+h3 {
+    font-family: Sister;
+}
+
 p {
-    /* font-family: 'Brush Script MT'; */
-    /* font-size: 40px; */
+    font-family: Frijole;
+}
+
+input {
+    font-family: Frijole;
 }
 
 .card-group {
     display: flex;
     gap: 1rem;
-  }
+}
 
-  .card {
-    flex: auto;
+.card {
+    flex: 1;
     padding: 1rem;
     border: 2px solid lightgrey;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
     background-color: white;
-  }
-
-  .card.selected {
-    border-color: blue;
-    background-color: lightcyan;
-  }
-
-  .card h3 {
-    margin: 0 0 0.5rem 0;
-  }
-
-  .card p {
-    margin: 0;
-  }
-
-/* .container {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    background-color: dodgerblue;
-    padding: 10px;
 }
 
-.container > div {
-    background-color: #f1f1f1;
-    border: 1px solid black;
-    padding: 10px;
-    font-size: 30px;
-    text-align: center;
-} */
+.card.selected {
+    border-color: blue;
+    background-color: lightcyan;
+}
+
+input[type="radio"] {
+    display: none;
+}

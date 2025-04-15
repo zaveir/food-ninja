@@ -13,7 +13,7 @@ import Model from "./Model.js";
 
 let scene, camera, renderer;
 let raycaster, mouse;
-let textureLoader, gtlfLoader;
+let gtlfLoader;
 
 const bgGroup = new THREE.Group();
 const usrGroup = new THREE.Group();
@@ -56,18 +56,13 @@ function init() {
     // Scene setup
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-    renderer = new THREE.WebGLRenderer({ alpha: false, premultipliedAlpha: false, antialias: true});
+    renderer = new THREE.WebGLRenderer({ alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(0x000000, 1);
-    renderer.getContext().clearColor(0, 0, 0, 1);
+    renderer.setClearColor(0x000000, 0);
     document.body.appendChild(renderer.domElement);
 
     camera.position.z = 5;
     renderer.localClippingEnabled = true;
-
-    textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load("/wood2.png");
-    scene.background = texture;
 
     raycaster = new THREE.Raycaster();
     mouse = new THREE.Vector2();
@@ -163,18 +158,17 @@ function createFruits() {
     const banana = new Model("/banana_3d_scanned/scene.gltf", "/banana_3d_scanned/textures/banana_baseColor.png", null, null, 5);
     const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
     const pineapple = new Model("/pineapple_fruit_1/scene.gltf", "/pineapple_fruit_1/textures/default_baseColor.jpeg", null, null, 1.5);
-    // models.set("orange", orange); 
-    // models.set("watermelon", watermelon);
-    // models.set("apple", apple); 
-    // models.set("pear", pear);
-    // models.set("lemon", lemon);
+    models.set("orange", orange); 
+    models.set("watermelon", watermelon);
+    models.set("apple", apple); 
+    models.set("pear", pear);
+    models.set("lemon", lemon);
     models.set("lime", lime); 
-    // models.set("carrot", carrot); 
-    // models.set("broccoli", broccoli); 
-    // models.set("cakepop", cakepop);
-    // models.set("banana", banana);
-    // models.set("strawberry", strawberry);
-    // models.set("pineapple", pineapple);
+    models.set("carrot", carrot); 
+    models.set("broccoli", broccoli); 
+    models.set("banana", banana);
+    models.set("strawberry", strawberry);
+    models.set("pineapple", pineapple);
     if (difficulty !== "beginner") {
         models.set("balloon", balloon); 
     }
@@ -194,18 +188,18 @@ function createDesserts() {
     const oatCake = new Model("/oatCake/Oat_Cake_FBX.gltf", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Base_Color.png", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Metallic.png", "/oatCake/Oat_Cake_Texture4K/Oat_Cakes_Normal_DirectX.png", 0.08);
     const poundCake = new Model("/poundCake/Pound_Cake_FBX.gltf", "/poundCake/Pound_Cake_Texture4k/PoundCake__Base_Color.png", "/poundCake/Pound_Cake_Texture4k/PoundCake__Metallic.png", "/poundCake/Pound_Cake_Texture4k/PoundCake__Normal_DirectX.png", 0.07);
     const cornishPastry = new Model("/cornish_pasty/scene.gltf", "/cornish_pasty/textures/Default_Material_baseColor.png", "/cornish_pasty/textures/Default_Material_metallicRoughness.png", "/cornish_pasty/textures/Default_Material_normal.png", 0.006);
-    // models.set("chocolateCake", chocolateCake);
+    models.set("chocolateCake", chocolateCake);
     models.set("croissant", croissant);
-    // models.set("iceCream", iceCream); 
-    // models.set("donutSprinkled", donutSprinkled);
-    // models.set("donut", donut);
-    // models.set("yeast", yeast);
-    // models.set("yogurt", yogurt); 
-    // models.set("cake", cake);
-    // models.set("cakepop", cakepop);
-    // models.set("oatCake", oatCake);
-    // models.set("poundCake", poundCake);
-    // models.set("cornishPastry", cornishPastry);
+    models.set("iceCream", iceCream); 
+    models.set("donutSprinkled", donutSprinkled);
+    models.set("donut", donut);
+    models.set("yeast", yeast);
+    models.set("yogurt", yogurt); 
+    models.set("cake", cake);
+    models.set("cakepop", cakepop);
+    models.set("oatCake", oatCake);
+    models.set("poundCake", poundCake);
+    models.set("cornishPastry", cornishPastry);
     if (difficulty !== "beginner") {
         models.set("balloon", balloon); 
     }

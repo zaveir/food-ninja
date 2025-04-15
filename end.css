@@ -1,9 +1,9 @@
 .container {
     display: flex;
-    background-color: yellow;
+    background-color: lightgray;
 }
 
 .container > * {
-    background-color: green;
+    background-color: lightcyan;
     padding: 10px;
 }
