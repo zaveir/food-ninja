@@ -1,9 +1,35 @@
+body {
+    background-image: url("/wood.jpg");
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+}
+
 .container {
     display: flex;
-    background-color: lightgray;
 }
 
 .container > * {
-    background-color: lightcyan;
     padding: 10px;
+}
+
+@font-face {
+    font-family: Frijole;
+    src: url(Frijole/Frijole-Regular.ttf);
+}
+
+@font-face {
+    font-family: Sister;
+    src: url(Love_Ya_Like_A_Sister/LoveYaLikeASister-Regular.ttf);
+}
+
+h1 {
+    font-family: Frijole;
+}
+
+h2 {
+    font-family: Sister;
+}
+
+input {
+    font-family: Frijole;
 }

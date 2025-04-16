@@ -3,32 +3,45 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Food Ninja</title>
-        <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="end.css">
 	</head>
 	<body>
-        <p>End Game</p>
+        <h1>End Game</h1>
         <div class="container">
-            <p>Score: </p>
-            <p id="score"></p>
+            <h2>Score: </h2>
+            <h2 id="score"></h2>
         </div>
         <div class="container">
-            <p>Hit Rate: </p>
-            <p id="rate"></p>
+            <h2>Hit Rate: </h2>
+            <h2 id="rate"></h2>
         </div>
         <div class="container">
-            <p>Ranking: </p>
-            <p id="ranking"></p>
+            <h2>Ranking: </h2>
+            <h2 id="ranking"></h2>
         </div>
-        <a href="index.html">PLAY AGAIN</a>
+        <br>
+        <input type="button" value="PLAY AGAIN" onclick="location.href='index.html';" />
+        <!-- <a href="index.html">PLAY AGAIN</a> -->
 	</body>
     <script>
         window.onload = function(){
             const urlParams = new URLSearchParams(window.location.search);
             const score = urlParams.get("score");
             const total = urlParams.get("total");
+            const percent = !total || !score ? 0 : score / total * 100;
+            let ranking;
+
+            if (percent >= 95) ranking = "Grandmaster Ninja";
+            else if (percent >= 90) ranking = "Master Ninja";
+            else if (percent >= 80) ranking = "Advanced Ninja";
+            else if (percent >= 70) ranking = "Experienced Ninja";
+            else if (percent >= 60) ranking = "Novice Ninja";
+            else if (percent >= 40) ranking = "Apprentice Ninja";
+            else ranking = "Baby Ninja";
+
             document.getElementById("score").innerHTML = score;
-            document.getElementById("rate").innerHTML = `${score / total * 100}%`;
+            document.getElementById("rate").innerHTML = `${percent}%`;
+            document.getElementById("ranking").innerText = ranking;
         };
     </script>
 </html>
