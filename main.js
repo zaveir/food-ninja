@@ -5,12 +5,6 @@ import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import Model from "./Model.js";
 
-/**
- * TODO
- * Intro 
- * End game screen
- */
-
 let scene, camera, renderer;
 let raycaster, mouse;
 let gtlfLoader;
@@ -39,6 +33,9 @@ let models = new Map();
 
 let seconds = 30;
 let difficulty, mode;
+
+const splatters = [];
+const splatterVelocities = [];
 
 window.onload = function(){
     const urlParams = new URLSearchParams(window.location.search);
@@ -221,6 +218,8 @@ function animate() {
         mesh.rotation.z += obj.zRot;
     });
 
+    renderSplatters();
+
     renderer.render(scene, camera);
 }
 
@@ -323,29 +322,107 @@ window.addEventListener("mouseup", () => {
     sliceLineGeometry.computeBoundingSphere();
 
     if (slicePoints.length > 0) {
-        if (slicedMesh) disappear(slicedMesh);
-
-        let planeGeo;
-        let splatterTexture;
-
         if (slicedMesh.name === "shar") {
             updateScore(-1);
-            planeGeo = new THREE.PlaneGeometry(1.5, 1.5);
-            splatterTexture = new THREE.TextureLoader().load("/pop.png");
+            addSplatter(slicedMesh.position, 0xff0000, 100, 1, 0.1)
         } else {
             updateScore(1);
-            planeGeo = new THREE.PlaneGeometry(1.5, 1.5);
-            splatterTexture = new THREE.TextureLoader().load("/splatter.png");
+            const meshColor = getRandomPixelColor(slicedMesh);
+            addSplatter(slicedMesh.position, meshColor, 10, 1, 0.02);
         }
 
-        const planeMaterial = new THREE.MeshBasicMaterial( { map: splatterTexture, transparent: true, alphaTest: 0.5 } );
-        const plane = new THREE.Mesh(planeGeo, planeMaterial);
-        plane.position.set(...slicedMesh.position);
-        splatterGroup.add(plane);
+        if (slicedMesh) disappear(slicedMesh);
     }
 
     slicedMesh = null;
 });
+
+function getRandomPixelColor(mesh) {
+    const material = mesh.material;
+    const texture = material.map;
+    const image = texture.image;
+  
+    const canvas = document.createElement("canvas");
+    canvas.width = image.width;
+    canvas.height = image.height;
+    const context = canvas.getContext("2d");
+    context.drawImage(image, 0, 0);
+  
+    const x = Math.floor(Math.random() * image.width);
+    const y = Math.floor(Math.random() * image.height);
+  
+    const pixel = context.getImageData(x, y, 1, 1).data;
+    const color = new THREE.Color(pixel[0] / 255, pixel[1] / 255, pixel[2] / 255);
+    return color;
+}
+
+function addSplatter(position, color, count, size, speed) {
+    const positions = new Float32Array(count * 3);
+    const velocities = [];
+    
+    // Initialize positions and velocities
+    for (let i = 0; i < count; i++) {
+        positions[i * 3] = position.x;
+        positions[i * 3 + 1] = position.y;
+        positions[i * 3 + 2] = position.z;
+        
+        const angle = Math.random() * Math.PI * 2;
+        velocities.push({
+            x: Math.cos(angle) * Math.random() * speed,
+            y: Math.sin(angle) * Math.random() * speed,
+            z: Math.sin(angle) * Math.random() * speed,
+            life: 100
+        });
+    }
+    
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    
+    const particleTexture = new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/spark1.png');
+
+    const material = new THREE.PointsMaterial({
+        color: color,
+        size: size,
+        map: particleTexture,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending
+    });
+    
+    const splatter = new THREE.Points(geometry, material);
+    splatters.push(splatter);
+    splatterVelocities.push(velocities);
+    splatterGroup.add(splatter);
+}
+
+function renderSplatters() {
+    for (let i = 0; i < splatters.length; i++) {
+        const splatter = splatters[i];
+        const velocities = splatterVelocities[i];
+
+        const posAttr = splatter.geometry.getAttribute('position');
+        const position = posAttr.array;
+
+        for (let i = 0; i < velocities.length; i++) {
+            let velocity = velocities[i];
+            velocity.life--;
+
+            if (velocity.life === 0) {
+                splatterGroup.remove(splatter);
+                break;
+            }
+
+            position[i * 3] += velocity.x;
+            position[i * 3 + 1] += velocity.y;
+            position[i * 3 + 2] += velocity.z;
+
+            if (velocity.life < 50 && splatter.material.opacity > 0) {
+                splatter.material.opacity -= 0.005;
+            }
+        }
+
+        posAttr.needsUpdate = true;
+    }
+}
 
 function disappear(mesh) {
     foodsGroup.remove(mesh);
