@@ -15,15 +15,16 @@ body {
 }
 
 form {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
 
 h1 {
     font-family: Frijole;
-    padding-left: 3rem;
-    padding-right: 3rem;
-    padding-top: 2rem;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 3rem;
+    text-align: center;
 }
 
 h2 {
@@ -32,24 +33,21 @@ h2 {
 
 h3 {
     font-family: Sister;
+    text-align: center;
 }
 
 p {
     font-family: Frijole;
 }
 
-input {
-    font-family: Frijole;
-}
-
 .card-group {
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
 }
 
 .card {
     flex: 1;
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -65,7 +63,12 @@ input[type="radio"] {
 }
 
 input {
+    font-family: Frijole;
     background-color: #F9F8F7;
-    border-radius: 3px;
+    border-radius: 6px;
     border: none;
+    display: block;
+    margin: auto;
+    font-size: 16px;
+    padding: 0.5rem;
 }

@@ -9,7 +9,7 @@ body {
 }
 
 .container > * {
-    padding: 10px;
+    margin-right: 1rem;
 }
 
 @font-face {
@@ -24,6 +24,10 @@ body {
 
 h1 {
     font-family: Frijole;
+    margin-left: 3rem;
+    margin-right: 3rem;
+    margin-top: 3rem;
+    text-align: center;
 }
 
 h2 {
@@ -32,4 +36,16 @@ h2 {
 
 input {
     font-family: Frijole;
+    background-color: #F9F8F7;
+    border-radius: 6px;
+    border: none;
+    display: block;
+    margin: auto;
+    font-size: 16px;
+    padding: 0.5rem;
+}
+
+div {
+    margin-left: 3rem;
+    margin-right: 3rem;
 }
