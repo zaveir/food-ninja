@@ -14,8 +14,16 @@ body {
     src: url(Love_Ya_Like_A_Sister/LoveYaLikeASister-Regular.ttf);
 }
 
+form {
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
 h1 {
     font-family: Frijole;
+    padding-left: 3rem;
+    padding-right: 3rem;
+    padding-top: 2rem;
 }
 
 h2 {
@@ -42,18 +50,22 @@ input {
 .card {
     flex: 1;
     padding: 1rem;
-    border: 2px solid lightgrey;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
-    background-color: white;
+    background-color: #E7D7CC;
 }
 
 .card.selected {
-    border-color: blue;
-    background-color: lightcyan;
+    background-color: #F9F8F7;
 }
 
 input[type="radio"] {
     display: none;
+}
+
+input {
+    background-color: #F9F8F7;
+    border-radius: 3px;
+    border: none;
 }

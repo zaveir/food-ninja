@@ -42,24 +42,12 @@
             <br>
             <input type="submit" value="START"/>
         </form>
-
-        <!-- <form id="levelForm">
-            <p>Select a difficulty level:</p>
-            <input type="radio" id="beginner" name="difficulty" value="beginner">
-            <label for="beginner">Beginner</label>
-            <input type="radio" id="intermediate" name="difficulty" value="intermediate">
-            <label for="intermediate">Intermediate</label>
-            <input type="radio" id="advanced" name="difficulty" value="advanced">
-            <label for="advanced">Advanced</label>
-            <p>Select a food mode:</p>
-            <input type="radio" id="fruit" name="mode" value="fruit">
-            <label for="fruit">Fruit</label>
-            <input type="radio" id="dessert" name="mode" value="dessert">
-            <label for="dessert">Dessert</label>
-            <input type="submit" value="START"/>
-        </form> -->
 	</body>
     <script>
+        window.onload = function() {
+            document.getElementById("description").innerText = "\n\n";
+        }
+
         const cardGroups = document.querySelectorAll(".card-group");
         cardGroups.forEach(group => {
             const cards = group.querySelectorAll(".card");
@@ -75,11 +63,11 @@
                     const description = document.getElementById("description")
 
                     if (forAttrib === "beginner") {
-                        description.innerText = "No ballons";
+                        description.innerText = "*No balloons\n\n";
                     } else if (forAttrib === "intermediate") {
-                        description.innerText = "Avoid ballons\nFoods come at faster speeds";
+                        description.innerText = "*Avoid balloons\n*Foods come at faster speeds";
                     } else if (forAttrib === "advanced") {
-                        description.innerText = "Even faster speeds";
+                        description.innerText = "*Even faster speeds\n\n";
                     }
                 });
             });
@@ -96,33 +84,7 @@
                 return;
             }
 
-            //console.log(`main.html?difficulty=${difficulty.value}&mode=${mode.value}`);
             window.location.href = `main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
         });
-
-        // window.onload = function() {
-        //     const levelForm = document.getElementById("levelForm");
-        //     levelForm.addEventListener("submit", (event) => {
-        //         event.preventDefault();
-        //         const { difficulty, mode } = levelForm.elements;
-        //         let difficultySelection, modeSelection;
-
-        //         for (const radioButton of difficulty) {
-        //             if (radioButton.checked) {
-        //                 difficultySelection = radioButton.value;
-        //                 break;
-        //             }
-        //         }
-
-        //         for (const radioButton of mode) {
-        //             if (radioButton.checked) {
-        //                 modeSelection = radioButton.value;
-        //                 break;
-        //             }
-        //         }
-
-        //         window.location.href = `main.html?difficulty=${difficultySelection}&mode=${modeSelection}`;
-        //     });
-        // }
     </script>
 </html>
