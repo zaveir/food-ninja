@@ -7,5 +7,6 @@ export default {
         end: "./end.html",
       }
     }
-  }
+  },
+  base: "/food-ninja"
 }
