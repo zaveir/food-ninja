@@ -4,11 +4,11 @@
     "three-mesh-bvh": "^0.9.0"
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "vite": "^6.2.0"
   },
   "scripts": {
     "build": "vite build",
-    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   }
 }
