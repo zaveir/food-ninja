@@ -35,7 +35,6 @@ let seconds = 30;
 let difficulty, mode;
 
 const splatters = [];
-const splatterVelocities = [];
 
 window.onload = function(){
     const urlParams = new URLSearchParams(window.location.search);
@@ -388,26 +387,28 @@ function addSplatter(position, color, count, size, speed) {
         blending: THREE.AdditiveBlending
     });
     
-    const splatter = new THREE.Points(geometry, material);
-    splatters.push(splatter);
-    splatterVelocities.push(velocities);
-    splatterGroup.add(splatter);
+    const mesh = new THREE.Points(geometry, material);
+    splatters.push({
+        mesh: mesh,
+        velocities: velocities
+    });
+    splatterGroup.add(mesh);
 }
 
 function renderSplatters() {
-    for (let i = 0; i < splatters.length; i++) {
-        const splatter = splatters[i];
-        const velocities = splatterVelocities[i];
+    splatters.forEach(splatter => {
+        const mesh = splatter.mesh;
+        const velocities = splatter.velocities;
 
-        const posAttr = splatter.geometry.getAttribute('position');
-        const position = posAttr.array;
+        const postitionAttr = mesh.geometry.getAttribute("position");
+        const position = postitionAttr.array;
 
         for (let i = 0; i < velocities.length; i++) {
             let velocity = velocities[i];
             velocity.life--;
 
             if (velocity.life === 0) {
-                splatterGroup.remove(splatter);
+                splatterGroup.remove(mesh);
                 break;
             }
 
@@ -415,13 +416,13 @@ function renderSplatters() {
             position[i * 3 + 1] += velocity.y;
             position[i * 3 + 2] += velocity.z;
 
-            if (velocity.life < 50 && splatter.material.opacity > 0) {
-                splatter.material.opacity -= 0.005;
+            if (velocity.life < 50 && mesh.material.opacity > 0) {
+                mesh.material.opacity -= 0.005;
             }
         }
 
-        posAttr.needsUpdate = true;
-    }
+        postitionAttr.needsUpdate = true;
+    });
 }
 
 function disappear(mesh) {
