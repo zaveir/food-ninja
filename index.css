@@ -6,12 +6,12 @@ body {
 
 @font-face {
     font-family: Frijole;
-    src: url(Frijole/Frijole-Regular.ttf);
+    src: url(/Frijole/Frijole-Regular.ttf);
 }
 
 @font-face {
     font-family: Sister;
-    src: url(Love_Ya_Like_A_Sister/LoveYaLikeASister-Regular.ttf);
+    src: url(/Love_Ya_Like_A_Sister/LoveYaLikeASister-Regular.ttf);
 }
 
 form {
