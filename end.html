@@ -20,9 +20,9 @@
             <h2 id="ranking"></h2>
         </div>
         <br>
-        <input type="button" value="PLAY AGAIN" onclick="location.href='index.html';" />
+        <input id="playAgain" type="button" value="PLAY AGAIN"/>
 	</body>
-    <script>
+    <script type="module">
         window.onload = function(){
             const urlParams = new URLSearchParams(window.location.search);
             const score = urlParams.get("score");
@@ -41,6 +41,11 @@
             document.getElementById("score").innerHTML = score;
             document.getElementById("rate").innerHTML = `${percent.toFixed(0)}%`;
             document.getElementById("ranking").innerText = ranking;
+
+            document.getElementById("playAgain").addEventListener("click", () => {
+                const baseUrl = import.meta.env.BASE_URL;
+                window.location.href=`${baseUrl}/index.html`;
+            });
         };
     </script>
 </html>

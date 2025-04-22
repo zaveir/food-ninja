@@ -43,7 +43,7 @@
             <input type="submit" value="START"/>
         </form>
 	</body>
-    <script>
+    <script type="module">
         window.onload = function() {
             document.getElementById("description").innerText = "\n\n";
         }
@@ -84,7 +84,8 @@
                 return;
             }
 
-            window.location.href = `main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
+            const baseUrl = import.meta.env.BASE_URL;
+            window.location.href = `${baseUrl}/main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
         });
     </script>
 </html>

@@ -36,6 +36,8 @@ let difficulty, mode;
 
 const splatters = [];
 
+const baseUrl = import.meta.env.BASE_URL;
+
 window.onload = function(){
     const urlParams = new URLSearchParams(window.location.search);
     difficulty = urlParams.get("difficulty");
@@ -116,7 +118,7 @@ function updateTimer() {
     document.getElementById("timer").innerHTML = seconds;
     
     if (seconds === 0) {
-        window.location.href = `end.html?score=${score}&total=${meshObjs.length}`;
+        window.location.href = `${baseUrl}/end.html?score=${score}&total=${meshObjs.length}`;
     } 
 
     seconds--;
