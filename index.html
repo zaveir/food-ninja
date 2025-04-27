@@ -3,7 +3,9 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Food Ninja</title>
-        <link rel="stylesheet" href="index.css">
+		<script type="module" crossorigin src="/food-ninja/assets/index-Brs--pNg.js"></script>
+		<link rel="modulepreload" crossorigin href="/food-ninja/assets/modulepreload-polyfill-B5Qt9EMX.js">
+		<link rel="stylesheet" crossorigin href="/food-ninja/assets/index-DVa3nrWx.css">
 	</head>
 	<body>
         <h1>Welcome to Food Ninja!</h1>
@@ -43,49 +45,4 @@
             <input type="submit" value="START"/>
         </form>
 	</body>
-    <script type="module">
-        window.onload = function() {
-            document.getElementById("description").innerText = "\n\n";
-        }
-
-        const cardGroups = document.querySelectorAll(".card-group");
-        cardGroups.forEach(group => {
-            const cards = group.querySelectorAll(".card");
-
-            cards.forEach(card => {
-                card.addEventListener("click", () => {
-                    cards.forEach(c => c.classList.remove("selected")); // Clear any selections
-                    card.classList.add("selected"); // Add selected class to this radio
-                    const input = card.querySelector("input[type='radio']");
-                    input.checked = true;
-
-                    const forAttrib = card.getAttribute("for");
-                    const description = document.getElementById("description")
-
-                    if (forAttrib === "beginner") {
-                        description.innerText = "*No balloons\n\n";
-                    } else if (forAttrib === "intermediate") {
-                        description.innerText = "*Avoid balloons\n*Foods come at faster speeds";
-                    } else if (forAttrib === "advanced") {
-                        description.innerText = "*Avoid balloons\n*Even faster speeds";
-                    }
-                });
-            });
-        })
-        
-        const levelForm = document.getElementById("levelForm");
-        levelForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const difficulty = document.querySelector('input[name="difficulty"]:checked');
-            const mode = document.querySelector('input[name="mode"]:checked')
-
-            if (!difficulty || !mode) {
-                alert("Please select both a color and a size.");
-                return;
-            }
-
-            const baseUrl = import.meta.env.BASE_URL;
-            window.location.href = `${baseUrl}/main.html?difficulty=${difficulty.value}&mode=${mode.value}`;
-        });
-    </script>
 </html>
