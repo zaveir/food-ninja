@@ -1,8 +1,0 @@
-Model Information:
-* title:	carrot (free)
-* source:	https://sketchfab.com/3d-models/carrot-free-dc849f7598b4451e8868d4414473bec9
-* author:	Tryc (https://sketchfab.com/Tryc)
-
-Model License:
-* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
-* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works

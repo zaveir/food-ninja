@@ -46,7 +46,6 @@ window.onload = function(){
     init();
     setInterval(updateTimer, 1000);
     randomTick();
-    // spawnFood();
     animate();
 };
 
@@ -150,8 +149,6 @@ function createFruits() {
     const pear = new Model("/lowpoly_pear/scene.gltf", "/lowpoly_pear/textures/Material.001_baseColor.png", "/lowpoly_pear/textures/Material.001_metallicRoughness.png", "/lowpoly_pear/textures/Material.001_normal.png", 0.4, 3 * Math.PI / 2);
     const lemon = new Model("/lemon/scene.gltf", "/lemon/textures/Lemon_baseColor.png", "/lemon/textures/Lemon_metallicRoughness.png", "/lemon/textures/Lemon_normal.png", 0.1);
     const lime = new Model("/persian_lime/scene.gltf", "/persian_lime/textures/fr_persianLime_diffuse.jpeg", "/persian_lime/textures/fr_persianLime_specularGlossiness.png", "/persian_lime/textures/fr_persianLime_normal.jpeg", 12);
-    const carrot = new Model("/carrot_free/scene.gltf", "/carrot_free/textures/Material_baseColor.png", "/carrot_free/textures/Material_metallicRoughness.png", "/carrot_free/textures/Material_normal.png", 0.18, Math.PI / 2);
-    const broccoli = new Model("/broccoli/broccoli_v3.gltf", "/broccoli/broccoli_brobody_Mat_BaseColor.png", "/broccoli/broccoli_brobody_Mat_AO-broccoli_brobody_Mat_Roughness-broccoli_brobody_Mat_Metallic.png", "/broccoli/broccoli_brobody_Mat_Normal.png", 5);
     const balloon = new Model("/balloon/shar.gltf", "/balloon/textures/shar_DefaultMaterial_BaseColor.png", "/balloon/textures/shar_DefaultMaterial_OcclusionRoughnessMetallic.png", "/balloon/textures/shar_DefaultMaterial_Normal.png", 0.03);
     const banana = new Model("/banana_3d_scanned/scene.gltf", "/banana_3d_scanned/textures/banana_baseColor.png", null, null, 5);
     const strawberry = new Model("/strawberry/scene.gltf", "/strawberry/textures/Strawberry_baseColor.jpeg", "/strawberry/textures/Strawberry_metallicRoughness.png", "/strawberry/textures/Strawberry_normal.png", 0.12);
@@ -162,8 +159,6 @@ function createFruits() {
     models.set("pear", pear);
     models.set("lemon", lemon);
     models.set("lime", lime); 
-    models.set("carrot", carrot); 
-    models.set("broccoli", broccoli); 
     models.set("banana", banana);
     models.set("strawberry", strawberry);
     models.set("pineapple", pineapple);
